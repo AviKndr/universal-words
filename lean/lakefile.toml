@@ -1,0 +1,16 @@
+name = "universalwords"
+version = "0.1.0"
+defaultTargets = ["UniversalWords"]
+
+[leanOptions]
+pp.unicode.fun = true
+relaxedAutoImplicit = false
+
+# Pinned to the Mathlib revision the development was checked against.
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4"
+rev = "ae26804842dd341fb1c52e81d71f1a105ef4ca34"
+
+[[lean_lib]]
+name = "UniversalWords"
