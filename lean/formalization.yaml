@@ -46,7 +46,12 @@ sources:
       This formalization is the first presentation of the result; the proof
       it formalizes is the accompanying paper in this repository, written as
       part of the same project. The paper has not (yet) been published or
-      posted elsewhere.
+      posted elsewhere. Novelty basis: Problem 10.32 does not appear in the
+      Kourovka Notebook's Archive of Solved Problems as of the 21st edition
+      (2026), and literature searches (zbMATH, August 2026) found no prior
+      solution beyond the alternating-group case (Brenner-Evans-Silberger)
+      and the linear bound (Droste) cited in the problem statement; novelty
+      beyond those searches is not claimed.
   - title: "Unsolved problems in group theory. The Kourovka Notebook, Problem 10.32"
     contributors:
       - name: "Yu. I. Merzlyakov"
@@ -57,10 +62,10 @@ sources:
         role: "editor"
     id: "arXiv:1401.0300"
     type: "other"
-    location: "Problem 10.32 (tenth issue, 1986)"
+    location: "Problem 10.32; posed in the tenth issue (1986), quoted from the 21st edition (2026)"
     relationship: "background"
     note: "The open problem the formalized result answers."
-  - title: "Bounds for the anticenter of a group (universality of x^r y^s on alternating groups)"
+  - title: "The universality of words x^r y^s in alternating groups"
     authors: ["J. L. Brenner", "R. J. Evans", "D. M. Silberger"]
     id: "Proc. Amer. Math. Soc. 96 (1986), no. 1, 23-28"
     type: "paper"
@@ -68,12 +73,15 @@ sources:
     note: >-
       The A_n result whose S_n analogue Problem 10.32 requests; quoted in the
       problem statement. Not used in the proof.
-  - title: "On a question of C. L. Silberger (universality bound n >= max{6, 4m-4} for S_n)"
+  - title: "On the universality of words for the alternating groups"
     authors: ["M. Droste"]
     id: "Proc. Amer. Math. Soc. 96 (1986), no. 1, 18-22"
     type: "paper"
     relationship: "background"
-    note: "The previously known linear-in-m bound for S_n. Not used in the proof."
+    note: >-
+      Source of the previously known linear-in-m bound for S_n
+      (n >= max{6, 4m(r,s)-4}) quoted in the problem statement. Not used in
+      the proof.
   - title: "Representation of permutations as products of two cycles"
     authors: ["M. Herzog", "G. Kaplan", "A. Lev"]
     id: "Discrete Math. 285 (2004), 323-327"
@@ -81,7 +89,7 @@ sources:
     location: "Theorem 7 (sufficiency)"
     relationship: "background"
     note: "Stated as HKLStatement; hypothesis of the conditional theorem."
-  - title: "Cycles comme produit de deux permutations de classes donnees"
+  - title: "Cycles comme produit de deux permutations de classes données"
     authors: ["G. Boccara"]
     id: "Discrete Math. 38 (1982), 129-142"
     type: "paper"
@@ -124,7 +132,7 @@ sources:
       conditional theorem. The threshold M0 is ineffective.
   - title: "Sieve Methods"
     authors: ["H. Halberstam", "H.-E. Richert"]
-    id: "Academic Press, 1974. ISBN 0-12-318250-6"
+    id: "Academic Press, 1974"
     type: "book"
     location: "Theorem 3.11"
     relationship: "background"
