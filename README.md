@@ -85,7 +85,9 @@ composition-order conventions; the mathematics itself is proved in the paper.
 What that does and does not establish is recorded by `#print axioms`, which the
 development runs on itself:
 
-- The **lower bound** (§8) depends on nothing beyond Mathlib's standard axioms.
+- **Proposition 8.1** (§8) — both halves: the word `x^lcm(1..n) y^s` misses every
+  element of order 3, *and* its cost `log m(r,s)` is exactly `θ(n)` — depends on
+  nothing beyond Mathlib's standard axioms.
 - The **Main Theorem** depends on exactly four declared axioms: three published
   theorems quoted in the form the paper uses (Herzog–Kaplan–Lev, Boccara,
   Rosser–Schoenfeld) and — flagged explicitly as *not* a citation — the paper's own
@@ -93,11 +95,15 @@ development runs on itself:
   assumed rather than formalized.
 
 So the combinatorial content of the paper — the case division, all three
-constructions, the reductions, the assembly, and the optimality of the logarithmic
-shape — is machine-checked, conditional on Proposition 6.5 and those three
-published theorems. The §5 dyadic window argument that yields the constant 4.65
-depends on Rosser–Schoenfeld alone. See `lean/README.md` for the exact axiom
-listing.
+constructions, the §3 reductions, the §7 assembly, and Proposition 8.1 — is
+machine-checked, conditional on Proposition 6.5 and those three published
+theorems. The §5 dyadic window argument that yields the constant 4.65 depends on
+Rosser–Schoenfeld alone.
+
+Two things are deliberately **not** formalized, and the optimality claim rests on
+the second of them: Corollary 8.2 needs `θ(n) < n` for infinitely many `n` (an
+unconditional but deep oscillation theorem), and Proposition 6.5 itself. See
+`lean/README.md` for the exact axiom listing.
 
 ## Status
 

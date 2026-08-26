@@ -11,24 +11,6 @@ namespace UniversalWords
 open Equiv Equiv.Perm
 open scoped Classical
 
-/-- `L r s` is the total log-mass of the primes dividing `rs`. -/
-lemma L_eq_sum (r s : ℤ) (h : (r * s) ≠ 0) :
-    L r s = ∑ p ∈ (r * s).natAbs.primeFactors, Real.log p := by
-  unfold L mrs
-  rw [Nat.cast_prod, Real.log_prod (fun p hp => by
-    simp only [id_eq, ne_eq, Nat.cast_eq_zero]
-    exact (Nat.prime_of_mem_primeFactors hp).ne_zero)]
-  simp
-
-lemma L_nonneg (r s : ℤ) : 0 ≤ L r s := by
-  unfold L
-  apply Real.log_nonneg
-  have : 1 ≤ mrs r s := by
-    unfold mrs
-    exact Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr
-      (fun p hp => (Nat.prime_of_mem_primeFactors hp).ne_zero))
-  exact_mod_cast this
-
 /-- **Lemma 2.3.**  A window `(a, b]` whose Chebyshev mass exceeds the mass of the
 primes dividing `M` contains a prime not dividing `M`. -/
 theorem exists_prime_window_not_dvd (a b : ℝ) (ha : 0 ≤ a) (hb : (11927 : ℝ) < b)

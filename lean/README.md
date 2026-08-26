@@ -46,7 +46,18 @@ argument is *not* formalized.  So the honest reading is:
 
 Everything else is proved: in particular §5's dyadic window argument (which is
 what improves the constant to 4.65) depends on Rosser–Schoenfeld alone, and §8's
-lower bound depends on nothing beyond Mathlib.
+Proposition 8.1 depends on nothing beyond Mathlib — both halves of it, the
+non-universality (`not_universal`) and the cost identity `log m(r,s) = θ(n)`
+(`L_eq_theta`).
+
+**What is not formalized.** Corollary 8.2 — the step from Proposition 8.1 to
+"the constant cannot be taken to be 1" — needs `θ(n) < n` for infinitely many
+`n`, an unconditional but deep oscillation theorem; it is not formalized, so the
+*optimality* conclusion is not machine-checked even though the construction
+behind it is. And `exists_good_prime` is stated for all nonzero `r, s`, slightly
+more generally than the paper's standing assumption (2.1); §6.3 of the paper now
+records that Proposition 6.5 and its proof do not use (2.1), which is what
+licenses the Lean form.
 
 There are no `sorry`s.
 

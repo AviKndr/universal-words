@@ -13,6 +13,7 @@ import Mathlib
 namespace UniversalWords
 
 open Equiv Equiv.Perm
+open scoped Classical
 
 variable {α : Type*} [Fintype α] [DecidableEq α]
 
@@ -150,5 +151,51 @@ theorem word_of_factorization {G : Type*} [Group G] {z A B : G} (hz : z = A * B)
   obtain ⟨x, hx⟩ := exists_zpow_eq_of_coprime hA
   obtain ⟨y, hy⟩ := exists_zpow_eq_of_coprime hB
   exact ⟨x, y, by rw [hx, hy, hz]⟩
+
+/-! ## The arithmetic of the exponents -/
+
+/-- `m(r,s)`: the product of the distinct primes dividing `rs` (so `m = 1` when
+`rs = ±1`).  This is the paper's `m(r,s)`, and matches the encoding audited
+against the Kourovka register. -/
+def mrs (r s : ℤ) : ℕ := (r * s).natAbs.primeFactors.prod id
+
+/-- `L = log m(r,s)`, the total logarithmic mass of the primes dividing `rs`. -/
+noncomputable def L (r s : ℤ) : ℝ := Real.log (mrs r s)
+
+/-- The primes in the half-open window `(a, b]`. -/
+noncomputable def primesIn (a b : ℝ) : Finset ℕ :=
+  (Finset.range (⌊b⌋₊ + 1)).filter (fun p => Nat.Prime p ∧ a < (p : ℝ))
+
+lemma prime_of_mem_primesIn {a b : ℝ} {p : ℕ} (h : p ∈ primesIn a b) : p.Prime := by
+  simp only [primesIn, Finset.mem_filter] at h; exact h.2.1
+
+lemma lt_of_mem_primesIn {a b : ℝ} {p : ℕ} (h : p ∈ primesIn a b) : a < (p : ℝ) := by
+  simp only [primesIn, Finset.mem_filter] at h; exact h.2.2
+
+lemma le_of_mem_primesIn {a b : ℝ} {p : ℕ} (hb : 0 ≤ b) (h : p ∈ primesIn a b) :
+    (p : ℝ) ≤ b := by
+  simp only [primesIn, Finset.mem_filter, Finset.mem_range] at h
+  have : p ≤ ⌊b⌋₊ := Nat.lt_succ_iff.mp h.1
+  calc (p : ℝ) ≤ (⌊b⌋₊ : ℝ) := by exact_mod_cast this
+    _ ≤ b := Nat.floor_le hb
+
+/-- `L r s` is the total log-mass of the primes dividing `rs`. -/
+lemma L_eq_sum (r s : ℤ) (h : (r * s) ≠ 0) :
+    L r s = ∑ p ∈ (r * s).natAbs.primeFactors, Real.log p := by
+  unfold L mrs
+  rw [Nat.cast_prod, Real.log_prod (fun p hp => by
+    simp only [id_eq, ne_eq, Nat.cast_eq_zero]
+    exact (Nat.prime_of_mem_primeFactors hp).ne_zero)]
+  simp
+
+lemma L_nonneg (r s : ℤ) : 0 ≤ L r s := by
+  unfold L
+  apply Real.log_nonneg
+  have : 1 ≤ mrs r s := by
+    unfold mrs
+    exact Nat.one_le_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr
+      (fun p hp => (Nat.prime_of_mem_primeFactors hp).ne_zero))
+  exact_mod_cast this
+
 
 end UniversalWords
