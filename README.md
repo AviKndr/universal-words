@@ -42,6 +42,10 @@ ineffective one.
 | `universal-words.tex` | The paper (LaTeX source, `amsart`, no external style files) |
 | `universal-words.pdf` | Compiled paper, 14 pages |
 | `validate.py` | Machine validation of the paper's computational claims |
+| `lean/` | Lean 4 formalization of the proof, on top of Mathlib |
+
+The paper and `validate.py` are self-contained (`validate.py` needs only `sympy`).
+The Lean development needs Mathlib; see `lean/README.md`.
 
 ## Building
 
@@ -72,6 +76,28 @@ Five independent checks, each runnable on its own (`python3 validate.py criteria
 
 These guard chiefly against misquotation of the imported criteria and against slips in
 composition-order conventions; the mathematics itself is proved in the paper.
+
+## Formalization
+
+`lean/` contains a Lean 4 formalization checked against Mathlib. The Main Theorem
+(`kourovka_10_32`) and the §8 lower bound both compile with **no `sorry`s**.
+
+What that does and does not establish is recorded by `#print axioms`, which the
+development runs on itself:
+
+- The **lower bound** (§8) depends on nothing beyond Mathlib's standard axioms.
+- The **Main Theorem** depends on exactly four declared axioms: three published
+  theorems quoted in the form the paper uses (Herzog–Kaplan–Lev, Boccara,
+  Rosser–Schoenfeld) and — flagged explicitly as *not* a citation — the paper's own
+  Proposition 6.5, whose Vinogradov/sieve/Brun–Titchmarsh averaging argument is
+  assumed rather than formalized.
+
+So the combinatorial content of the paper — the case division, all three
+constructions, the reductions, the assembly, and the optimality of the logarithmic
+shape — is machine-checked, conditional on Proposition 6.5 and those three
+published theorems. The §5 dyadic window argument that yields the constant 4.65
+depends on Rosser–Schoenfeld alone. See `lean/README.md` for the exact axiom
+listing.
 
 ## Status
 
