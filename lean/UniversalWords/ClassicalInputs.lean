@@ -3,9 +3,11 @@ The external inputs of the paper, as axioms.
 
 **Everything in this file is assumed, not proved.**  Each axiom is a published
 theorem cited in the paper, restated in the exact form in which the paper uses
-it, with one clearly-flagged exception (`exists_good_prime`) noted below.  Running
-`#print axioms UniversalWords.kourovka_10_32` at the end of `Main.lean` lists
-precisely which of these the final theorem depends on.
+it.  (In earlier revisions the paper's own Proposition 6.5 was also an axiom
+here; it is now **proved** in `GoodPrime.lean` from the analytic axioms of
+`Analytic.lean`.)  Running `#print axioms UniversalWords.kourovka_10_32` in
+`UniversalWords.lean` lists precisely which axioms the final theorem depends
+on.
 
 Sources:
 * `hkl` --- M. Herzog, G. Kaplan, A. Lev, *Representation of permutations as
@@ -18,14 +20,6 @@ Sources:
   (1962), Theorem 9 (`θ(x) < 1.01624x`), together with Math. Comp. **29** (1975),
   Corollary to Theorem 6 (`θ(x) > 0.985x` for `x > 11927`); the difference of the
   two gives the stated mass bound on a window.
-* `exists_good_prime` --- **this one is the paper's own Proposition 6.5**, not an
-  external citation.  Its proof (paper §6.2--6.3) derives it from Vinogradov's
-  three-primes theorem, an upper-bound sieve (Halberstam--Richert Theorem 3.11)
-  and Brun--Titchmarsh (Montgomery--Vaughan), by averaging the singular series
-  over a window of primes.  That analytic argument is *not* formalised here; it
-  is assumed, and the honest reading of `Main.lean` is "the combinatorial content
-  of the paper is machine-checked, conditional on Proposition 6.5 and on the three
-  published theorems above".
 -/
 import UniversalWords.Basic
 
@@ -70,29 +64,5 @@ axiom boccara_three {n : ℕ} (z : Perm (Fin n)) (N q₁ q₂ q₃ : ℕ)
     (hq : q₁ + q₂ + q₃ + 1 = N) (h₁ : 2 ≤ q₁) (h₂ : 2 ≤ q₂) (h₃ : 2 ≤ q₃)
     (hdelta : 3 ≤ delta z) (hodd : Odd (delta z)) :
     ∃ A B : Perm (Fin n), A.cycleType = {q₁, q₂, q₃} ∧ B.IsCycle ∧ md B = N ∧ z = A * B
-
-/-! ## Axiom 4: the paper's Proposition 6.5 (NOT an external citation) -/
-
-/-- **Proposition 6.5 of the paper** --- assumed here, not formalised.
-
-Given the exponents, for `n` beyond an (ineffective) threshold and past the
-logarithmic barrier, there is a prime `q̃` in `(n/4, n/2]` not dividing `s` such
-that `2q̃ - 1` is a sum of three primes none of which divides `rs`.
-
-The paper proves this in §6.2--6.3 from Vinogradov's three-primes theorem, an
-upper-bound sieve, and Brun--Titchmarsh, by averaging the singular series over the
-window; the ineffectivity of `N₀` in the Main Theorem enters here and only here.
-
-Note the quantifier order, which is the whole content of Problem 10.32: the
-constants `C_star` and `N_star` are chosen *before* `r` and `s`, so the threshold
-is uniform in the word.  (`N_star` is the ineffective one.) -/
-axiom exists_good_prime :
-    ∃ (C_star : ℝ) (N_star : ℕ), (4.65 : ℝ) ≤ C_star ∧
-      ∀ (r s : ℤ), r * s ≠ 0 → ∀ n : ℕ, N_star ≤ n → C_star * L r s ≤ (n : ℝ) →
-        ∃ qt q₁ q₂ q₃ : ℕ, qt.Prime ∧ ¬ (qt ∣ s.natAbs) ∧
-          ((n : ℝ) + 2) / 4 < (qt : ℝ) ∧ (qt : ℝ) ≤ (n : ℝ) / 2 ∧
-          q₁.Prime ∧ q₂.Prime ∧ q₃.Prime ∧
-          ¬ (q₁ ∣ (r * s).natAbs) ∧ ¬ (q₂ ∣ (r * s).natAbs) ∧ ¬ (q₃ ∣ (r * s).natAbs) ∧
-          q₁ + q₂ + q₃ + 1 = 2 * qt
 
 end UniversalWords

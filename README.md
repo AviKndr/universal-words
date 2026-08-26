@@ -88,22 +88,22 @@ development runs on itself:
 - **Proposition 8.1** (§8) — both halves: the word `x^lcm(1..n) y^s` misses every
   element of order 3, *and* its cost `log m(r,s)` is exactly `θ(n)` — depends on
   nothing beyond Mathlib's standard axioms.
-- The **Main Theorem** depends on exactly four declared axioms: three published
-  theorems quoted in the form the paper uses (Herzog–Kaplan–Lev, Boccara,
-  Rosser–Schoenfeld) and — flagged explicitly as *not* a citation — the paper's own
-  Proposition 6.5, whose Vinogradov/sieve/Brun–Titchmarsh averaging argument is
-  assumed rather than formalized.
+- The **Main Theorem** depends on exactly **eight published theorems**, each
+  axiomatized in the form the paper uses with its source documented:
+  Herzog–Kaplan–Lev, Boccara, Rosser–Schoenfeld (three explicit bounds),
+  Montgomery–Vaughan's Brun–Titchmarsh, the Halberstam–Richert sieve, and
+  Vinogradov's three-primes theorem.
+- **The paper's own analysis is fully machine-checked**: Lemma 6.4 (the
+  singular-series average) is proved from Brun–Titchmarsh alone, and
+  Proposition 6.5 — the analytic heart of §6, formerly itself an axiom — is
+  proved from the five analytic inputs.
 
-So the combinatorial content of the paper — the case division, all three
-constructions, the §3 reductions, the §7 assembly, and Proposition 8.1 — is
-machine-checked, conditional on Proposition 6.5 and those three published
-theorems. The §5 dyadic window argument that yields the constant 4.65 depends on
-Rosser–Schoenfeld alone.
-
-Two things are deliberately **not** formalized, and the optimality claim rests on
-the second of them: Corollary 8.2 needs `θ(n) < n` for infinitely many `n` (an
-unconditional but deep oscillation theorem), and Proposition 6.5 itself. See
-`lean/README.md` for the exact axiom listing.
+So the entire argument of the paper, combinatorial and analytic, is
+machine-checked conditional only on published literature. The one deliberately
+unformalized step is Corollary 8.2's use of `θ(n) < n` infinitely often (a deep
+oscillation theorem), so the *optimality* conclusion — though its construction
+is verified — is not machine-checked. See `lean/README.md` for the exact axiom
+listing.
 
 ## Status
 

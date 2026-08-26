@@ -14,13 +14,18 @@ whole chain take ~25 s rather than ~2 min.
 
 | File | Paper |
 | --- | --- |
-| `UniversalWords/Basic.lean` | §2: `md`, `cy`, `δ`; Lemma 2.1; the root lemma 2.2; the factorization core |
-| `UniversalWords/ClassicalInputs.lean` | the four **axioms** — see below |
+| `UniversalWords/Basic.lean` | §2: `md`, `cy`, `δ`; Lemma 2.1; the root lemma 2.2; the factorization core; `m(r,s)` and `L` |
+| `UniversalWords/ClassicalInputs.lean` | **axioms**: Herzog–Kaplan–Lev, Boccara, Rosser–Schoenfeld (θ-window form) |
+| `UniversalWords/Analytic.lean` | **axioms**: RS π-bounds, Brun–Titchmarsh, Vinogradov, the Halberstam–Richert sieve |
+| `UniversalWords/CountingLemmas.lean` | proved: `r₂`/`r₃` combinatorics, bad-triple fibering, Markov |
+| `UniversalWords/SeriesBounds.lean` | proved: telescoping replacements for every Euler-product numeric |
+| `UniversalWords/Averaging.lean` | proved: **Lemma 6.4** (the singular-series average) from Brun–Titchmarsh alone |
+| `UniversalWords/GoodPrime.lean` | proved: **Proposition 6.5** from the analytic axioms |
 | `UniversalWords/Windows.lean` | §2.4: Lemma 2.3, prime windows avoiding `rs` |
 | `UniversalWords/Cases.lean` | §4 (Proposition 4.1) and §6 (Lemma 6.2) |
 | `UniversalWords/Dense.lean` | §5 (Proposition 5.1) and its dyadic window argument |
 | `UniversalWords/Main.lean` | §3 reductions, §7 assembly, **`kourovka_10_32`** |
-| `UniversalWords/LowerBound.lean` | §8 optimality — **no axioms beyond Mathlib** |
+| `UniversalWords/LowerBound.lean` | §8: Proposition 8.1, both halves — **no axioms beyond Mathlib** |
 
 ## What is proved and what is assumed
 
@@ -30,38 +35,34 @@ whole chain take ~25 s rather than ~2 min.
 'UniversalWords.kourovka_10_32' depends on axioms:
   [propext, Classical.choice, Quot.sound,          -- Lean's standard three
    UniversalWords.boccara_three,                   -- Boccara 1982
-   UniversalWords.exists_good_prime,               -- the paper's own Prop. 6.5
+   UniversalWords.brun_titchmarsh,                 -- Montgomery–Vaughan 1973
    UniversalWords.hkl,                             -- Herzog–Kaplan–Lev 2004
-   UniversalWords.rs_window_mass]                  -- Rosser–Schoenfeld
-'UniversalWords.not_universal' depends on axioms:
-  [propext, Classical.choice, Quot.sound]
+   UniversalWords.pi_lower, UniversalWords.pi_upper,  -- Rosser–Schoenfeld 1962
+   UniversalWords.rs_window_mass,                  -- Rosser–Schoenfeld 1962/1975
+   UniversalWords.sieve_r2,                        -- Halberstam–Richert 1974
+   UniversalWords.vinogradov]                      -- Vinogradov 1937
+'UniversalWords.exists_good_prime' (= the paper's Proposition 6.5) depends on:
+  [standard three, brun_titchmarsh, pi_lower, pi_upper, sieve_r2, vinogradov]
+'UniversalWords.averaging' (= the paper's Lemma 6.4) depends on:
+  [standard three, brun_titchmarsh]
+'UniversalWords.not_universal', 'UniversalWords.L_eq_theta' (§8):
+  [standard three only]
 ```
 
-Three of the four assumptions are published theorems quoted in the form the paper
-uses.  **The fourth, `exists_good_prime`, is the paper's own Proposition 6.5** —
-the analytic heart of §6, proved there from Vinogradov's three-primes theorem, an
-upper-bound sieve and Brun–Titchmarsh by averaging the singular series.  That
-argument is *not* formalized.  So the honest reading is:
+**Every axiom is a published theorem**, quoted in the form the paper uses and
+documented with its source in `ClassicalInputs.lean` / `Analytic.lean`.  In
+particular the paper's own analysis — Lemma 6.4's singular-series averaging and
+Proposition 6.5's assembly, previously assumed — is now machine-checked: the
+Euler-product numerics are replaced by exact telescoping sums, the non-reduced
+Brun–Titchmarsh classes are shown to be empty (window primes exceed `√n`), and
+the numeric budget closes with the constants chosen inside the proof from the
+axioms' existential constants.
 
-> the combinatorial content of the paper — the case division, all three
-> constructions, the reductions, the assembly, and the optimality of the
-> logarithmic shape — is machine-checked, conditional on Proposition 6.5 and on
-> three published theorems.
+So the honest reading is now:
 
-Everything else is proved: in particular §5's dyadic window argument (which is
-what improves the constant to 4.65) depends on Rosser–Schoenfeld alone, and §8's
-Proposition 8.1 depends on nothing beyond Mathlib — both halves of it, the
-non-universality (`not_universal`) and the cost identity `log m(r,s) = θ(n)`
-(`L_eq_theta`).
-
-**What is not formalized.** Corollary 8.2 — the step from Proposition 8.1 to
-"the constant cannot be taken to be 1" — needs `θ(n) < n` for infinitely many
-`n`, an unconditional but deep oscillation theorem; it is not formalized, so the
-*optimality* conclusion is not machine-checked even though the construction
-behind it is. And `exists_good_prime` is stated for all nonzero `r, s`, slightly
-more generally than the paper's standing assumption (2.1); §6.3 of the paper now
-records that Proposition 6.5 and its proof do not use (2.1), which is what
-licenses the Lean form.
+> the entire argument of the paper — combinatorial and analytic — is
+> machine-checked, conditional only on eight published theorems of the
+> literature.
 
 There are no `sorry`s.
 

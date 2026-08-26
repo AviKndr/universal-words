@@ -2,6 +2,7 @@
 §§3 and 7 of the paper: the reductions and the assembly of the Main Theorem.
 -/
 import UniversalWords.Dense
+import UniversalWords.GoodPrime
 
 namespace UniversalWords
 

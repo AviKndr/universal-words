@@ -15,6 +15,11 @@ depends on: everything beyond Lean's three standard axioms is declared in
 -/
 import UniversalWords.Basic
 import UniversalWords.ClassicalInputs
+import UniversalWords.Analytic
+import UniversalWords.CountingLemmas
+import UniversalWords.SeriesBounds
+import UniversalWords.Averaging
+import UniversalWords.GoodPrime
 import UniversalWords.Windows
 import UniversalWords.Cases
 import UniversalWords.Dense
@@ -22,6 +27,8 @@ import UniversalWords.Main
 import UniversalWords.LowerBound
 
 #print axioms UniversalWords.kourovka_10_32
+#print axioms UniversalWords.exists_good_prime
+#print axioms UniversalWords.averaging
 #print axioms UniversalWords.not_universal
 #print axioms UniversalWords.L_eq_theta
 #print axioms UniversalWords.exists_dyadic_prime
