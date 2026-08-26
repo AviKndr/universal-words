@@ -22,10 +22,14 @@ which answer the question in both directions for the parity range where
 universality is possible at all (`r` or `s` odd):
 
 * `kourovka_10_32_conditional` — **the positive direction.**  There are
-  effective constants `C` and `N₀` such that for all nonzero exponents `r, s`
-  with `r` or `s` odd, the word `x^r y^s` is universal on `Sₙ` whenever
-  `n ≥ N₀` and `n ≥ C · log m(r,s)`, where `m(r,s)` is the product of the
-  distinct primes dividing `rs`.  The theorem is stated as a fully proved
+  constants `C` and `N₀` such that for all nonzero exponents `r, s` with `r`
+  or `s` odd, the word `x^r y^s` is universal on `Sₙ` whenever `n ≥ N₀` and
+  `n ≥ C · log m(r,s)`, where `m(r,s)` is the product of the distinct primes
+  dividing `rs`.  (In the accompanying paper the multiplicative constant is
+  effective — `C = 4.65` suffices for its effective cases — while the
+  threshold `N₀` is ineffective, solely because the proof invokes
+  Vinogradov's three-primes theorem; the formal statement accordingly
+  asserts existence of the constants.)  The theorem is stated as a fully proved
   implication from eight named classical results (Herzog–Kaplan–Lev, Boccara,
   three Rosser–Schoenfeld bounds, Montgomery–Vaughan's Brun–Titchmarsh
   inequality, Vinogradov's three-primes theorem, and the Halberstam–Richert
@@ -197,7 +201,8 @@ every `z` of order `3` in the symmetric group of `Fin n`, there is an odd
 `s ∣ lcm(1,…,n)` such that the word `x^(lcm(1,…,n)) y^s` never attains `z` —
 while its cost `log m(lcm(1,…,n), s)` equals `θ(n) = Σ_{p ≤ n} log p` exactly.
 So the logarithmic shape of the main theorem's hypothesis cannot be improved
-to `n ≥ log m(r,s)` with constant `1`, since `θ(n) < n` infinitely often. -/
+to `n ≥ log m(r,s)` with constant `1`, since `θ(n) < n` infinitely often (a
+classical oscillation fact not formalised here). -/
 theorem not_universal (n : ℕ) (z : Perm (Fin n)) (hz : orderOf z = 3) :
     ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧
       L (R n : ℤ) (s : ℤ) = ∑ p ∈ (Finset.range (n + 1)).filter Nat.Prime, Real.log p ∧

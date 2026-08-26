@@ -6,7 +6,9 @@ project:
   description: >-
     Answer to Problem 10.32 of the Kourovka Notebook (posed by Yu. I.
     Merzlyakov, 1986), in both directions. Positive direction: there are
-    effective constants C and N0 such that for all nonzero integers r, s with
+    constants C and N0 (C effective - the paper computes C = 4.65 for its
+    effective cases - while N0 is ineffective solely through Vinogradov's
+    three-primes theorem) such that for all nonzero integers r, s with
     r or s odd, the word x^r y^s is universal on the symmetric group S_n
     (every permutation is a value) whenever n >= N0 and n >= C * log m(r,s),
     where m(r,s) is the product of the distinct primes dividing rs. This is
@@ -235,7 +237,8 @@ fidelity:
     the twin-prime constant. The formal constants (C, N0) are constructed
     from the hypotheses' existential constants rather than being the paper's
     numerically optimised C = 4.65, so the formal theorem asserts existence
-    of effective constants rather than that particular value. Corollary 8.2's
+    of constants rather than that particular value, and the threshold N0
+    inherits the ineffectivity of the Vinogradov hypothesis's threshold. Corollary 8.2's
     appeal to theta(n) < n infinitely often is not formalized.
 
 review:

@@ -1,10 +1,10 @@
 #!/bin/bash
-# Local incremental check against an already-built Mathlib on this machine.
-# Set MATHLIB_PROJECT to any lake project whose Mathlib is built.
-# (Portable route for other machines: `lake exe cache get && lake build`.)
+# Local incremental single-file check against this project's built Mathlib
+# (run `lake exe cache get && lake build` once first). Set MATHLIB_PROJECT to
+# borrow another lake project's built Mathlib instead.
 set -e
 LEAN_DIR="$(cd "$(dirname "$0")" && pwd)"
-MATHLIB_PROJECT="${MATHLIB_PROJECT:-$HOME/groups/gruppelib}"
+MATHLIB_PROJECT="${MATHLIB_PROJECT:-$LEAN_DIR}"
 LP=$(cd "$MATHLIB_PROJECT" && lake env printenv LEAN_PATH)
 export LEAN_PATH="$LEAN_DIR/.build:$LP"
 mkdir -p "$LEAN_DIR/.build/UniversalWords"
