@@ -23,7 +23,8 @@ lemma swap_exponents {G : Type*} [Group G] {r s : ℤ}
 /-! ## §7: assembling the three constructions -/
 
 /-- The universality statement for one degree `n`, all targets, with `s` odd. -/
-theorem universal_of_odd_right {n : ℕ} (r s : ℤ) (hrs : r * s ≠ 0)
+theorem universal_of_odd_right (hRS : RSWindowMassStatement) (hHKL : HKLStatement)
+    (hBoc : BoccaraStatement) {n : ℕ} (r s : ℤ) (hrs : r * s ≠ 0)
     (hsodd : ¬ (2 ∣ s.natAbs)) (C_star : ℝ) (N_star : ℕ) (hC : (4.65 : ℝ) ≤ C_star)
     (hgood : ∀ (r s : ℤ), r * s ≠ 0 → ∀ n : ℕ, N_star ≤ n → C_star * L r s ≤ (n : ℝ) →
         ∃ qt q₁ q₂ q₃ : ℕ, qt.Prime ∧ ¬ (qt ∣ s.natAbs) ∧
@@ -44,12 +45,12 @@ theorem universal_of_odd_right {n : ℕ} (r s : ℤ) (hrs : r * s ≠ 0)
   · exact ⟨1, 1, by simp [hz1]⟩
   rcases Int.units_eq_one_or (Equiv.Perm.sign z) with heven | hoddz
   · -- `z` even and non-trivial: Proposition 4.1
-    exact even_case r s hrs (by omega) hL45 z hz1 heven
+    exact even_case hRS hHKL r s hrs (by omega) hL45 z hz1 heven
   · -- `z` odd: `δ z` is odd
     have hodd : Odd (delta z) := (odd_delta_iff z).mpr hoddz
     by_cases hdense : n ≤ 2 * md z
     · -- Proposition 5.1
-      exact dense_case r s hrs hsodd (by omega) hL465 z hodd hdense
+      exact dense_case hRS hHKL r s hrs hsodd (by omega) hL465 z hodd hdense
     · rw [not_le] at hdense
       by_cases hd1 : delta z = 1
       · -- a bare transposition: `y := z`, `x := 1`, since `s` is odd
@@ -78,7 +79,7 @@ theorem universal_of_odd_right {n : ℕ} (r s : ℤ) (hrs : r * s ≠ 0)
           have h2 : (2 : ℝ) * md z < n := by exact_mod_cast hdense
           have : (md z : ℝ) ≤ 2 * qt := by linarith
           exact_mod_cast this
-        exact sparse_case r s hsodd z hodd hd3 qt q₁ q₂ q₃ hqt hqts hNn hmdN
+        exact sparse_case hBoc r s hsodd z hodd hd3 qt q₁ q₂ q₃ hqt hqts hNn hmdN
           hq₁ hq₂ hq₃ hd₁ hd₂ hd₃ hsum
 
 /-- An odd integer has odd absolute value. -/
@@ -92,19 +93,28 @@ lemma not_two_dvd_natAbs_of_odd {a : ℤ} (h : Odd a) : ¬ (2 ∣ a.natAbs) := b
 
 /-! ## The Main Theorem -/
 
-/-- **Main Theorem** (Kourovka Notebook, Problem 10.32).  There are absolute
-constants `C` and `N₀` such that, for all nonzero integers `r, s` at least one of
-which is odd, the word `x^r y^s` is universal on `S_n` whenever
+/-- **Main Theorem, conditional form** (Kourovka Notebook, Problem 10.32).
+Assuming the eight classical statements — Rosser--Schoenfeld (window mass and
+the two `π`-bounds), Herzog--Kaplan--Lev, Boccara, Brun--Titchmarsh,
+Vinogradov, and the Halberstam--Richert sieve — there are absolute constants
+`C` and `N₀` such that, for all nonzero integers `r, s` at least one of which
+is odd, the word `x^r y^s` is universal on `S_n` whenever
 `n ≥ max {N₀, C · log m(r,s)}`.
 
-The constants are quantified before `r` and `s`: the bound is uniform in the word,
-which is what Problem 10.32 asks for and what distinguishes it from Droste's
-theorem. -/
-theorem kourovka_10_32 :
+Every hypothesis is a published theorem (sources in `ClassicalInputs.lean` and
+`Analytic.lean`); this implication is proved using only Lean's standard axioms.
+The constants are quantified before `r` and `s`: the bound is uniform in the
+word, which is what Problem 10.32 asks for and what distinguishes it from
+Droste's theorem. -/
+theorem kourovka_10_32_conditional (hRS : RSWindowMassStatement)
+    (hHKL : HKLStatement) (hBoc : BoccaraStatement)
+    (hPiU : PiUpperStatement) (hPiL : PiLowerStatement)
+    (hBT : BrunTitchmarshStatement) (hVino : VinogradovStatement)
+    (hSieve : SieveR2Statement) :
     ∃ (C : ℝ) (N₀ : ℕ), ∀ r s : ℤ, r * s ≠ 0 → (Odd r ∨ Odd s) →
       ∀ n : ℕ, N₀ ≤ n → C * L r s ≤ (n : ℝ) →
         ∀ z : Perm (Fin n), ∃ x y : Perm (Fin n), x ^ r * y ^ s = z := by
-  obtain ⟨C_star, N_star, hC, hgood⟩ := exists_good_prime
+  obtain ⟨C_star, N_star, hC, hgood⟩ := exists_good_prime hPiU hPiL hBT hVino hSieve
   refine ⟨C_star, max 381700 N_star, ?_⟩
   intro r s hrs hodd n hn hL z
   -- put the odd exponent second
@@ -113,10 +123,10 @@ theorem kourovka_10_32 :
     refine swap_exponents (s := s) (r := r) ?_ z
     have hsr : s * r ≠ 0 := by rwa [mul_comm] at hrs
     have hLsr : L s r = L r s := by unfold L mrs; rw [mul_comm]
-    exact universal_of_odd_right s r hsr (not_two_dvd_natAbs_of_odd hr)
+    exact universal_of_odd_right hRS hHKL hBoc s r hsr (not_two_dvd_natAbs_of_odd hr)
       C_star N_star hC hgood hn (by rwa [hLsr])
   · -- `s` odd
-    exact universal_of_odd_right r s hrs (not_two_dvd_natAbs_of_odd hs)
+    exact universal_of_odd_right hRS hHKL hBoc r s hrs (not_two_dvd_natAbs_of_odd hs)
       C_star N_star hC hgood hn hL z
 
 end UniversalWords

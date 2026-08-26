@@ -26,7 +26,8 @@ lemma primesIn_disjoint {a₁ b₁ a₂ b₂ : ℝ} (hb₂ : 0 ≤ b₂) (h : b�
 
 /-- **The dyadic step of Proposition 5.1.**  One of the five windows
 `(3n/2^{a+2}, n/2^a]`, `1 ≤ a ≤ 5`, contains a prime not dividing `rs`. -/
-theorem exists_dyadic_prime (r s : ℤ) (hrs : r * s ≠ 0) (hn : 381700 ≤ n)
+theorem exists_dyadic_prime (hRS : RSWindowMassStatement)
+    (r s : ℤ) (hrs : r * s ≠ 0) (hn : 381700 ≤ n)
     (hL : (4.65 : ℝ) * L r s ≤ (n : ℝ)) :
     ∃ a q : ℕ, 1 ≤ a ∧ a ≤ 5 ∧ q.Prime ∧ ¬ (q ∣ (r * s).natAbs) ∧
       3 * (n : ℝ) / 2 ^ (a + 2) < (q : ℝ) ∧ (q : ℝ) ≤ (n : ℝ) / 2 ^ a := by
@@ -93,15 +94,15 @@ theorem exists_dyadic_prime (r s : ℤ) (hrs : r * s ≠ 0) (hn : 381700 ≤ n)
           exact ⟨d13, d23⟩),
         Finset.sum_union d12]
   -- lower bounds for the five masses, from Rosser--Schoenfeld
-  have m₁ := rs_window_mass (3 * (n : ℝ) / 8) ((n : ℝ) / 2) (by positivity) (by linarith)
+  have m₁ := hRS (3 * (n : ℝ) / 8) ((n : ℝ) / 2) (by positivity) (by linarith)
     (by linarith)
-  have m₂ := rs_window_mass (3 * (n : ℝ) / 16) ((n : ℝ) / 4) (by positivity) (by linarith)
+  have m₂ := hRS (3 * (n : ℝ) / 16) ((n : ℝ) / 4) (by positivity) (by linarith)
     (by linarith)
-  have m₃ := rs_window_mass (3 * (n : ℝ) / 32) ((n : ℝ) / 8) (by positivity) (by linarith)
+  have m₃ := hRS (3 * (n : ℝ) / 32) ((n : ℝ) / 8) (by positivity) (by linarith)
     (by linarith)
-  have m₄ := rs_window_mass (3 * (n : ℝ) / 64) ((n : ℝ) / 16) (by positivity) (by linarith)
+  have m₄ := hRS (3 * (n : ℝ) / 64) ((n : ℝ) / 16) (by positivity) (by linarith)
     (by linarith)
-  have m₅ := rs_window_mass (3 * (n : ℝ) / 128) ((n : ℝ) / 32) (by positivity) (by linarith)
+  have m₅ := hRS (3 * (n : ℝ) / 128) ((n : ℝ) / 32) (by positivity) (by linarith)
     (by linarith)
   rw [← hW₁] at m₁; rw [← hW₂] at m₂; rw [← hW₃] at m₃; rw [← hW₄] at m₄; rw [← hW₅] at m₅
   -- the union's mass is at most `L`
@@ -152,7 +153,8 @@ theorem word_of_factorization_swap {G : Type*} [Group G] {z A B : G} (hz : z = A
   · rwa [orderOf_conj']
 
 /-- **Proposition 5.1.**  Odd targets moving at least `n/2` points. -/
-theorem dense_case (r s : ℤ) (hrs : r * s ≠ 0) (hsodd : ¬ (2 ∣ s.natAbs))
+theorem dense_case (hRS : RSWindowMassStatement) (hHKL : HKLStatement)
+    (r s : ℤ) (hrs : r * s ≠ 0) (hsodd : ¬ (2 ∣ s.natAbs))
     (hn : 381700 ≤ n) (hL : (4.65 : ℝ) * L r s ≤ (n : ℝ))
     (z : Perm (Fin n)) (hodd : Odd (delta z)) (hdense : n ≤ 2 * md z) :
     ∃ x y : Perm (Fin n), x ^ r * y ^ s = z := by
@@ -162,10 +164,10 @@ theorem dense_case (r s : ℤ) (hrs : r * s ≠ 0) (hsodd : ¬ (2 ∣ s.natAbs))
     intro h; rw [h] at hodd; simp [delta, md, cy] at hodd
   -- the odd factor `u`
   obtain ⟨u, hu, hudvd, hulow, huhigh⟩ :=
-    exists_prime_window_coprime r s hrs (3 * (n : ℝ) / 4) (n : ℝ)
+    exists_prime_window_coprime hRS r s hrs (3 * (n : ℝ) / 4) (n : ℝ)
       (by positivity) (by linarith) (by linarith) (by linarith)
   -- the even factor `v = 2^a q`
-  obtain ⟨a, q, ha1, ha5, hq, hqdvd, hqlow, hqhigh⟩ := exists_dyadic_prime r s hrs hn hL
+  obtain ⟨a, q, ha1, ha5, hq, hqdvd, hqlow, hqhigh⟩ := exists_dyadic_prime hRS r s hrs hn hL
   set v : ℕ := 2 ^ a * q with hv
   have hpow : (0 : ℝ) < 2 ^ a := by positivity
   have hveq : (v : ℝ) = 2 ^ a * (q : ℝ) := by rw [hv]; push_cast; ring
@@ -221,12 +223,12 @@ theorem dense_case (r s : ℤ) (hrs : r * s ≠ 0) (hsodd : ¬ (2 ∣ s.natAbs))
   -- HKL, with the larger length first; the swap covers the other order
   rcases le_total v u with hle | hle
   · obtain ⟨A, B, hAc, hAmd, hBc, hBmd, hzAB⟩ :=
-      hkl z hz u v hle hv2 hun hsum (by omega) (by omega)
+      hHKL _ z hz u v hle hv2 hun hsum (by omega) (by omega)
     refine word_of_factorization hzAB ?_ ?_
     · rw [hAc.orderOf, ← md, hAmd]; exact hucop
     · rw [hBc.orderOf, ← md, hBmd]; exact hvcop
   · obtain ⟨A, B, hAc, hAmd, hBc, hBmd, hzAB⟩ :=
-      hkl z hz v u hle hu.two_le hvn (by omega) (by omega) (by omega)
+      hHKL _ z hz v u hle hu.two_le hvn (by omega) (by omega) (by omega)
     refine word_of_factorization_swap hzAB ?_ ?_
     · rw [hBc.orderOf, ← md, hBmd]; exact hucop
     · rw [hAc.orderOf, ← md, hAmd]; exact hvcop

@@ -184,7 +184,8 @@ lemma sqrt_le_quarter {n : ℕ} (hn : 16 ≤ n) : Real.sqrt n ≤ (n : ℝ) / 4 
 
 /-- Brun--Titchmarsh count for the window: for odd `d ≤ √n`,
 `#{q ∈ W' : d ∣ 2q - b} ≤ (5/2) n/(φ(d) log n)`. -/
-lemma count_bt (n b d : ℕ) (hn : 1024 ≤ n) (hd : 0 < d) (hdodd : ¬ 2 ∣ d)
+lemma count_bt (hBT : BrunTitchmarshStatement)
+    (n b d : ℕ) (hn : 1024 ≤ n) (hd : 0 < d) (hdodd : ¬ 2 ∣ d)
     (hdsq : (d : ℝ) ≤ Real.sqrt n) (W' : Finset ℕ)
     (hW' : ∀ q ∈ W', q ∈ primesIn (((n : ℝ) + 2) / 4) ((n : ℝ) / 2))
     (hb : ∀ q ∈ W', b ≤ 2 * q) :
@@ -228,7 +229,7 @@ lemma count_bt (n b d : ℕ) (hn : 1024 ≤ n) (hd : 0 < d) (hdodd : ¬ 2 ∣ d)
       have := sqrt_le_quarter h16
       have h4 : (n : ℝ) / 4 < (n : ℝ) / 2 := by linarith
       linarith
-    have hbt := brun_titchmarsh d hd a hua ((n : ℝ) / 2) hdx
+    have hbt := hBT d hd a hua ((n : ℝ) / 2) hdx
     have hcount : ((W'.filter (fun q => d ∣ 2 * q - b)).card : ℝ) ≤
         2 * ((n : ℝ) / 2) / ((Nat.totient d : ℝ) * Real.log ((n : ℝ) / 2 / d)) := by
       refine le_trans ?_ hbt
@@ -319,7 +320,8 @@ lemma log_le_eight_sqrt3 {x : ℝ} (hx : 1 ≤ x) :
 /-- **Lemma 6.4** (the averaging lemma).  For any shift `b`,
 `Σ_{q ∈ W'} S(2q - b) ≤ 7 n / log n`, uniformly over subsets `W'` of the window
 whose elements clear the shift. -/
-theorem averaging (n : ℕ) (hn : 810 ^ 8 ≤ n) (b : ℕ) (W' : Finset ℕ)
+theorem averaging (hBT : BrunTitchmarshStatement)
+    (n : ℕ) (hn : 810 ^ 8 ≤ n) (b : ℕ) (W' : Finset ℕ)
     (hW' : ∀ q ∈ W', q ∈ primesIn (((n : ℝ) + 2) / 4) ((n : ℝ) / 2))
     (hb4 : ∀ q ∈ W', b + 4 ≤ 2 * q) :
     ∑ q ∈ W', SingSeries (2 * q - b) ≤ 7 * (n : ℝ) / Real.log n := by
@@ -376,7 +378,7 @@ theorem averaging (n : ℕ) (hn : 810 ^ 8 ≤ n) (b : ℕ) (W' : Finset ℕ)
       obtain ⟨hA𝒜, hAsq⟩ := hA
       have hAsub : A ⊆ oddPrimesUpTo n := Finset.mem_powerset.mp hA𝒜
       have hgnn : 0 ≤ gA A := gA_nonneg hAsub
-      have hbt := count_bt n b (dA A) hn6 (dA_pos hAsub) (dA_odd hAsub) hAsq W' hW'
+      have hbt := count_bt hBT n b (dA A) hn6 (dA_pos hAsub) (dA_odd hAsub) hAsq W' hW'
         (fun q hq => by have := hb4 q hq; omega)
       have htotpos : (0 : ℝ) < (Nat.totient (dA A) : ℝ) := by
         exact_mod_cast Nat.totient_pos.mpr (dA_pos hAsub)

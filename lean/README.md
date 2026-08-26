@@ -8,61 +8,65 @@ lake exe cache get   # fetch prebuilt Mathlib oleans (do this first)
 lake build
 ```
 
-The development uses targeted Mathlib imports rather than `import Mathlib`
-(`Basic.lean` carries the shared header), which makes a warm-cache check of the
-whole chain take ~25 s rather than ~2 min.
+The committed `lake-manifest.json` pins Mathlib and its transitive dependencies
+to exact commits. The development uses targeted Mathlib imports rather than
+`import Mathlib` (`Basic.lean` carries the shared header), which makes a
+warm-cache check of the whole chain take ~25 s rather than ~2 min.
 
 | File | Paper |
 | --- | --- |
 | `UniversalWords/Basic.lean` | §2: `md`, `cy`, `δ`; Lemma 2.1; the root lemma 2.2; the factorization core; `m(r,s)` and `L` |
-| `UniversalWords/ClassicalInputs.lean` | **axioms**: Herzog–Kaplan–Lev, Boccara, Rosser–Schoenfeld (θ-window form) |
-| `UniversalWords/Analytic.lean` | **axioms**: RS π-bounds, Brun–Titchmarsh, Vinogradov, the Halberstam–Richert sieve |
+| `UniversalWords/ClassicalInputs.lean` | **statements** (as named `Prop`s, nothing assumed): Herzog–Kaplan–Lev, Boccara, Rosser–Schoenfeld window mass |
+| `UniversalWords/Analytic.lean` | **statements**: RS π-bounds, Brun–Titchmarsh, Vinogradov, the Halberstam–Richert sieve; `r₂`, `r₃`, the singular series |
 | `UniversalWords/CountingLemmas.lean` | proved: `r₂`/`r₃` combinatorics, bad-triple fibering, Markov |
 | `UniversalWords/SeriesBounds.lean` | proved: telescoping replacements for every Euler-product numeric |
-| `UniversalWords/Averaging.lean` | proved: **Lemma 6.4** (the singular-series average) from Brun–Titchmarsh alone |
-| `UniversalWords/GoodPrime.lean` | proved: **Proposition 6.5** from the analytic axioms |
+| `UniversalWords/Averaging.lean` | proved: **Lemma 6.4** from the Brun–Titchmarsh statement alone |
+| `UniversalWords/GoodPrime.lean` | proved: **Proposition 6.5** from the five analytic statements |
 | `UniversalWords/Windows.lean` | §2.4: Lemma 2.3, prime windows avoiding `rs` |
 | `UniversalWords/Cases.lean` | §4 (Proposition 4.1) and §6 (Lemma 6.2) |
 | `UniversalWords/Dense.lean` | §5 (Proposition 5.1) and its dyadic window argument |
-| `UniversalWords/Main.lean` | §3 reductions, §7 assembly, **`kourovka_10_32`** |
-| `UniversalWords/LowerBound.lean` | §8: Proposition 8.1, both halves — **no axioms beyond Mathlib** |
+| `UniversalWords/Main.lean` | §3 reductions, §7 assembly, **`kourovka_10_32_conditional`** |
+| `UniversalWords/Unconditional.lean` | the **only** file with axioms: assumes the eight statements, derives `kourovka_10_32` |
+| `UniversalWords/LowerBound.lean` | §8: Proposition 8.1, both halves — no axioms beyond Mathlib |
 
 ## What is proved and what is assumed
 
-`#print axioms` (run by `UniversalWords.lean`) reports:
+The development is **parameterized by its classical inputs**. The eight
+published theorems it relies on are stated as named propositions
+(`RSWindowMassStatement`, `HKLStatement`, `BoccaraStatement`,
+`PiUpperStatement`, `PiLowerStatement`, `BrunTitchmarshStatement`,
+`VinogradovStatement`, `SieveR2Statement`), each documented with its source,
+and the principal theorem is the fully-proved implication
 
 ```
-'UniversalWords.kourovka_10_32' depends on axioms:
-  [propext, Classical.choice, Quot.sound,          -- Lean's standard three
-   UniversalWords.boccara_three,                   -- Boccara 1982
-   UniversalWords.brun_titchmarsh,                 -- Montgomery–Vaughan 1973
-   UniversalWords.hkl,                             -- Herzog–Kaplan–Lev 2004
-   UniversalWords.pi_lower, UniversalWords.pi_upper,  -- Rosser–Schoenfeld 1962
-   UniversalWords.rs_window_mass,                  -- Rosser–Schoenfeld 1962/1975
-   UniversalWords.sieve_r2,                        -- Halberstam–Richert 1974
-   UniversalWords.vinogradov]                      -- Vinogradov 1937
-'UniversalWords.exists_good_prime' (= the paper's Proposition 6.5) depends on:
-  [standard three, brun_titchmarsh, pi_lower, pi_upper, sieve_r2, vinogradov]
-'UniversalWords.averaging' (= the paper's Lemma 6.4) depends on:
-  [standard three, brun_titchmarsh]
-'UniversalWords.not_universal', 'UniversalWords.L_eq_theta' (§8):
-  [standard three only]
+kourovka_10_32_conditional :
+  RSWindowMassStatement → HKLStatement → BoccaraStatement →
+  PiUpperStatement → PiLowerStatement → BrunTitchmarshStatement →
+  VinogradovStatement → SieveR2Statement →
+  ∃ C N₀, ∀ r s, … (the Main Theorem)
 ```
 
-**Every axiom is a published theorem**, quoted in the form the paper uses and
-documented with its source in `ClassicalInputs.lean` / `Analytic.lean`.  In
-particular the paper's own analysis — Lemma 6.4's singular-series averaging and
-Proposition 6.5's assembly, previously assumed — is now machine-checked: the
-Euler-product numerics are replaced by exact telescoping sums, the non-reduced
-Brun–Titchmarsh classes are shown to be empty (window primes exceed `√n`), and
-the numeric budget closes with the constants chosen inside the proof from the
-axioms' existential constants.
+`#print axioms` (run by `UniversalWords.lean`) certifies:
 
-So the honest reading is now:
+```
+kourovka_10_32_conditional : [propext, Classical.choice, Quot.sound]
+exists_good_prime          : [propext, Classical.choice, Quot.sound]
+averaging                  : [propext, Classical.choice, Quot.sound]
+not_universal, L_eq_theta  : [propext, Classical.choice, Quot.sound]
+```
 
-> the entire argument of the paper — combinatorial and analytic — is
-> machine-checked, conditional only on eight published theorems of the
-> literature.
+— that is, the conditional main theorem, the paper's entire analysis
+(Lemma 6.4 and Proposition 6.5), and §8 are all proved **using only Lean's
+three standard axioms**.
+
+`Unconditional.lean` — imported by nothing else — assumes the eight statements
+as axioms and derives the unconditional `kourovka_10_32`, whose `#print axioms`
+lists exactly those eight. Every one is a published theorem; the sources are
+documented beside the statement definitions.
+
+The one deliberately unformalized step remains Corollary 8.2's use of
+`θ(n) < n` infinitely often, so the paper's *optimality* conclusion — though
+its construction (Proposition 8.1) is fully verified — is not machine-checked.
 
 There are no `sorry`s.
 

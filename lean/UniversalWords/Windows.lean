@@ -13,7 +13,8 @@ open scoped Classical
 
 /-- **Lemma 2.3.**  A window `(a, b]` whose Chebyshev mass exceeds the mass of the
 primes dividing `M` contains a prime not dividing `M`. -/
-theorem exists_prime_window_not_dvd (a b : ℝ) (ha : 0 ≤ a) (hb : (11927 : ℝ) < b)
+theorem exists_prime_window_not_dvd (hRS : RSWindowMassStatement)
+    (a b : ℝ) (ha : 0 ≤ a) (hb : (11927 : ℝ) < b)
     (hab : a ≤ b) (M : ℕ) (hM : M ≠ 0)
     (hmass : ∑ p ∈ M.primeFactors, Real.log p < 0.985 * b - 1.01624 * a) :
     ∃ p : ℕ, p.Prime ∧ ¬ (p ∣ M) ∧ a < (p : ℝ) ∧ (p : ℝ) ≤ b := by
@@ -32,15 +33,16 @@ theorem exists_prime_window_not_dvd (a b : ℝ) (ha : 0 ≤ a) (hb : (11927 : �
     apply Finset.sum_le_sum_of_subset_of_nonneg hsub
     intro p hp _
     exact Real.log_nonneg (by exact_mod_cast (Nat.prime_of_mem_primeFactors hp).one_lt.le)
-  have := rs_window_mass a b ha hb hab
+  have := hRS a b ha hb hab
   linarith
 
 /-- The form used in §§4--5: a prime in the window not dividing `rs`. -/
-theorem exists_prime_window_coprime (r s : ℤ) (hrs : r * s ≠ 0) (a b : ℝ)
+theorem exists_prime_window_coprime (hRS : RSWindowMassStatement)
+    (r s : ℤ) (hrs : r * s ≠ 0) (a b : ℝ)
     (ha : 0 ≤ a) (hb : (11927 : ℝ) < b) (hab : a ≤ b)
     (hmass : L r s < 0.985 * b - 1.01624 * a) :
     ∃ p : ℕ, p.Prime ∧ ¬ (p ∣ (r * s).natAbs) ∧ a < (p : ℝ) ∧ (p : ℝ) ≤ b := by
-  apply exists_prime_window_not_dvd a b ha hb hab _ (Int.natAbs_ne_zero.mpr hrs)
+  apply exists_prime_window_not_dvd hRS a b ha hb hab _ (Int.natAbs_ne_zero.mpr hrs)
   rw [← L_eq_sum r s hrs]; exact hmass
 
 /-- A prime not dividing `rs` is coprime to `r` (and, symmetrically, to `s`). -/

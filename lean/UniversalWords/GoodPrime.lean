@@ -122,7 +122,8 @@ lemma singSeries_nonneg (k : ℕ) : 0 ≤ SingSeries k := by
   positivity
 
 /-- `|W| ≥ 0.15 n / log n` for `n ≥ 810⁸`, by Rosser--Schoenfeld. -/
-lemma W_card_ge (n : ℕ) (hn : 810 ^ 8 ≤ n) :
+lemma W_card_ge (hPiU : PiUpperStatement) (hPiL : PiLowerStatement)
+    (n : ℕ) (hn : 810 ^ 8 ≤ n) :
     0.15 * (n : ℝ) / Real.log n ≤ ((W n).card : ℝ) := by
   have hn' : ((810 : ℝ)) ^ 8 ≤ (n : ℝ) := by exact_mod_cast hn
   have hbig : (10 : ℝ) ^ 6 ≤ (n : ℝ) := by nlinarith
@@ -151,7 +152,7 @@ lemma W_card_ge (n : ℕ) (hn : 810 ^ 8 ≤ n) :
   -- lower bound for `π(n/2)`
   have hpil : ((n : ℝ) / 2) / Real.log ((n : ℝ) / 2) ≤
       ((primesIn 0 ((n : ℝ) / 2)).card : ℝ) :=
-    pi_lower _ (by nlinarith)
+    hPiL _ (by nlinarith)
   have hpil' : 0.5 * (n : ℝ) / Real.log n ≤ ((primesIn 0 ((n : ℝ) / 2)).card : ℝ) := by
     refine le_trans ?_ hpil
     have hl2 : (0 : ℝ) < Real.log ((n : ℝ) / 2) := Real.log_pos (by nlinarith)
@@ -162,7 +163,7 @@ lemma W_card_ge (n : ℕ) (hn : 810 ^ 8 ≤ n) :
   -- upper bound for `π((n+2)/4)`
   have hpiu : ((primesIn 0 (((n : ℝ) + 2) / 4)).card : ℝ) ≤
       1.25506 * (((n : ℝ) + 2) / 4) / Real.log (((n : ℝ) + 2) / 4) :=
-    pi_upper _ (by nlinarith)
+    hPiU _ (by nlinarith)
   have hpiu' : ((primesIn 0 (((n : ℝ) + 2) / 4)).card : ℝ) ≤ 0.349 * (n : ℝ) / Real.log n := by
     refine le_trans hpiu ?_
     have hx1 : ((n : ℝ) + 2) / 4 ≤ 0.2501 * (n : ℝ) := by nlinarith
@@ -254,7 +255,8 @@ lemma E1_card_le (n : ℕ) (r s : ℤ) (hrs : r * s ≠ 0) (hn : 810 ^ 8 ≤ n) 
   linarith
 
 /-- The excluded primes up to `n` number at most `2.52√n/log n + 2L/log n`. -/
-lemma omega_card_le (n : ℕ) (r s : ℤ) (hrs : r * s ≠ 0) (hn : 810 ^ 8 ≤ n) :
+lemma omega_card_le (hPiU : PiUpperStatement)
+    (n : ℕ) (r s : ℤ) (hrs : r * s ≠ 0) (hn : 810 ^ 8 ≤ n) :
     ((((r * s).natAbs.primeFactors.filter (fun p => p ≤ n)).card : ℝ) ≤
       2.52 * Real.sqrt n / Real.log n + 2 * L r s / Real.log n) := by
   have hn' : ((810 : ℝ)) ^ 8 ≤ (n : ℝ) := by exact_mod_cast hn
@@ -281,7 +283,7 @@ lemma omega_card_le (n : ℕ) (r s : ℤ) (hrs : r * s ≠ 0) (hn : 810 ^ 8 ≤ 
       omega
     have hpiu : ((primesIn 0 (Real.sqrt n)).card : ℝ) ≤
         1.25506 * Real.sqrt n / Real.log (Real.sqrt n) := by
-      apply pi_upper
+      apply hPiU
       nlinarith [Real.sq_sqrt hnpos.le, Real.sqrt_nonneg (n : ℝ)]
     have hlsq : Real.log (Real.sqrt n) = Real.log n / 2 := Real.log_sqrt hnpos.le
     calc (Small.card : ℝ) ≤ ((primesIn 0 (Real.sqrt n)).card : ℝ) := by
@@ -322,10 +324,13 @@ lemma omega_card_le (n : ℕ) (r s : ℤ) (hrs : r * s ≠ 0) (hn : 810 ^ 8 ≤ 
 /-! ## Proposition 6.5 -/
 
 set_option maxHeartbeats 1600000 in
-/-- **Proposition 6.5 of the paper, proved.**  This replaces the axiom of the
-same name: the statement is identical, but it is now derived from `vinogradov`,
-`sieve_r2`, `brun_titchmarsh` and the Rosser--Schoenfeld bounds. -/
-theorem exists_good_prime :
+/-- **Proposition 6.5 of the paper, proved.**  Derived from the five analytic
+statements — Vinogradov's count form, the Halberstam--Richert sieve bound,
+Brun--Titchmarsh, and the two Rosser--Schoenfeld `π`-bounds — taken as
+hypotheses, so this theorem uses only Lean's standard axioms. -/
+theorem exists_good_prime (hPiU : PiUpperStatement) (hPiL : PiLowerStatement)
+    (hBT : BrunTitchmarshStatement) (hVino : VinogradovStatement)
+    (hSieve : SieveR2Statement) :
     ∃ (C_star : ℝ) (N_star : ℕ), (4.65 : ℝ) ≤ C_star ∧
       ∀ (r s : ℤ), r * s ≠ 0 → ∀ n : ℕ, N_star ≤ n → C_star * L r s ≤ (n : ℝ) →
         ∃ qt q₁ q₂ q₃ : ℕ, qt.Prime ∧ ¬ (qt ∣ s.natAbs) ∧
@@ -333,8 +338,8 @@ theorem exists_good_prime :
           q₁.Prime ∧ q₂.Prime ∧ q₃.Prime ∧
           ¬ (q₁ ∣ (r * s).natAbs) ∧ ¬ (q₂ ∣ (r * s).natAbs) ∧ ¬ (q₃ ∣ (r * s).natAbs) ∧
           q₁ + q₂ + q₃ + 1 = 2 * qt := by
-  obtain ⟨c₁, hc₁, M₀, hvino⟩ := vinogradov
-  obtain ⟨C₂, hC₂, hsieve⟩ := sieve_r2
+  obtain ⟨c₁, hc₁, M₀, hvino⟩ := hVino
+  obtain ⟨C₂, hC₂, hsieve⟩ := hSieve
   set Cs : ℝ := max 67 (max 4.65 (26880 * C₂ / c₁)) with hCs
   set Ns : ℕ := max (max (810 ^ 8) (2 * M₀ + 2))
       (max (⌈(19660800 / c₁ : ℝ) ^ 2⌉₊ + 1) (⌈(169350 * C₂ / c₁ : ℝ) ^ 2⌉₊ + 1)) with hNs
@@ -546,7 +551,7 @@ theorem exists_good_prime :
                       positivity
                   _ = C₂ * (4 * (n : ℝ) / (Real.log n) ^ 2) * SingSeries (2 * q - (1 + p)) := by
                       ring
-              have havg := averaging n hn8 (1 + p) Wp
+              have havg := averaging hBT n hn8 (1 + p) Wp
                 (fun q hq => hWmem q (Finset.mem_filter.mp hq).1)
                 (fun q hq => (Finset.mem_filter.mp hq).2)
               calc ∑ q ∈ Wp, (r₂ (2 * q - 1 - p) : ℝ)
@@ -592,7 +597,7 @@ theorem exists_good_prime :
   -- STEP D: the numeric budget, in `· log n ≤ c·n` form
   set E1 := (W n).filter (fun q => q ∣ s.natAbs) with hE1def
   have hWlogn : 0.15 * (n : ℝ) ≤ ((W n).card : ℝ) * Real.log n := by
-    have := W_card_ge n hn8
+    have := W_card_ge hPiU hPiL n hn8
     rw [div_le_iff₀ hlogn] at this
     linarith
   have hWn : ((W n).card : ℝ) ≤ (n : ℝ) := W_card_le n (by omega)
@@ -617,7 +622,7 @@ theorem exists_good_prime :
   have hEx'L : (Ex'.card : ℝ) * Real.log n ≤ 2.52 * Real.sqrt n + 2 * L r s := by
     have h3 : (Ex'.card : ℝ) ≤
         2.52 * Real.sqrt n / Real.log n + 2 * L r s / Real.log n :=
-      omega_card_le n r s hrs hn8
+      omega_card_le hPiU n r s hrs hn8
     have h4 := mul_le_mul_of_nonneg_right h3 hlogn.le
     calc (Ex'.card : ℝ) * Real.log n
         ≤ (2.52 * Real.sqrt n / Real.log n + 2 * L r s / Real.log n) * Real.log n := h4

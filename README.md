@@ -85,25 +85,25 @@ composition-order conventions; the mathematics itself is proved in the paper.
 What that does and does not establish is recorded by `#print axioms`, which the
 development runs on itself:
 
-- **Proposition 8.1** (§8) — both halves: the word `x^lcm(1..n) y^s` misses every
-  element of order 3, *and* its cost `log m(r,s)` is exactly `θ(n)` — depends on
-  nothing beyond Mathlib's standard axioms.
-- The **Main Theorem** depends on exactly **eight published theorems**, each
-  axiomatized in the form the paper uses with its source documented:
-  Herzog–Kaplan–Lev, Boccara, Rosser–Schoenfeld (three explicit bounds),
-  Montgomery–Vaughan's Brun–Titchmarsh, the Halberstam–Richert sieve, and
-  Vinogradov's three-primes theorem.
-- **The paper's own analysis is fully machine-checked**: Lemma 6.4 (the
-  singular-series average) is proved from Brun–Titchmarsh alone, and
-  Proposition 6.5 — the analytic heart of §6, formerly itself an axiom — is
-  proved from the five analytic inputs.
+- **`kourovka_10_32_conditional`** — the Main Theorem as a fully-proved
+  implication: eight explicitly stated published theorems (Herzog–Kaplan–Lev,
+  Boccara, three Rosser–Schoenfeld bounds, Brun–Titchmarsh, the
+  Halberstam–Richert sieve, Vinogradov) imply the logarithmic universality
+  bound. This implication, the paper's entire analysis (Lemma 6.4 and
+  Proposition 6.5), and §8's Proposition 8.1 are all proved **using only
+  Lean's three standard axioms** — no custom axiom appears in any of their
+  dependency sets.
+- **Proposition 8.1** (§8) is unconditional outright: the word
+  `x^lcm(1..n) y^s` misses every element of order 3, and its cost
+  `log m(r,s)` is exactly `θ(n)`.
+- A quarantined module (`Unconditional.lean`, imported by nothing else)
+  assumes the eight statements as axioms — each a published theorem with its
+  source documented — and derives the unconditional `kourovka_10_32`.
 
-So the entire argument of the paper, combinatorial and analytic, is
-machine-checked conditional only on published literature. The one deliberately
-unformalized step is Corollary 8.2's use of `θ(n) < n` infinitely often (a deep
-oscillation theorem), so the *optimality* conclusion — though its construction
-is verified — is not machine-checked. See `lean/README.md` for the exact axiom
-listing.
+The one deliberately unformalized step is Corollary 8.2's use of `θ(n) < n`
+infinitely often (a deep oscillation theorem), so the *optimality* conclusion —
+though its construction is verified — is not machine-checked. See
+`lean/README.md` for the exact axiom listing.
 
 ## Status
 

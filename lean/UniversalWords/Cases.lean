@@ -27,14 +27,15 @@ lemma md_add_cy_mod_two (z : Perm (Fin n)) : (md z + cy z) % 2 = delta z % 2 := 
 
 /-- **Proposition 4.1.**  For `z ≠ 1` even, a single prime `q ∈ (3n/4, n]` not
 dividing `rs` gives `z` as a product of two `q`-cycles, hence as `x^r y^s`. -/
-theorem even_case (r s : ℤ) (hrs : r * s ≠ 0) (hn : 23856 ≤ n)
+theorem even_case (hRS : RSWindowMassStatement) (hHKL : HKLStatement)
+    (r s : ℤ) (hrs : r * s ≠ 0) (hn : 23856 ≤ n)
     (hL : (4.5 : ℝ) * L r s ≤ (n : ℝ))
     (z : Perm (Fin n)) (hz : z ≠ 1) (heven : Equiv.Perm.sign z = 1) :
     ∃ x y : Perm (Fin n), x ^ r * y ^ s = z := by
   have hn' : (23856 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
   -- the prime `q`
   obtain ⟨q, hq, hqdvd, hqlow, hqhigh⟩ :=
-    exists_prime_window_coprime r s hrs (3 * (n : ℝ) / 4) (n : ℝ)
+    exists_prime_window_coprime hRS r s hrs (3 * (n : ℝ) / 4) (n : ℝ)
       (by positivity) (by linarith) (by linarith)
       (by have := L_nonneg r s; linarith)
   have hq2 : 2 ≤ q := hq.two_le
@@ -52,7 +53,7 @@ theorem even_case (r s : ℤ) (hrs : r * s ≠ 0) (hn : 23856 ≤ n)
     have h3 : 3 * n < 4 * q := by exact_mod_cast h2
     omega
   obtain ⟨A, B, hAc, hAmd, hBc, hBmd, hzAB⟩ :=
-    hkl z hz q q (le_refl q) hq2 hqn hsum
+    hHKL _ z hz q q (le_refl q) hq2 hqn hsum
       (by have := md_add_cy_mod_two z; omega) (by omega)
   refine word_of_factorization hzAB ?_ ?_
   · rw [hAc.orderOf, ← md, hAmd]
@@ -65,7 +66,7 @@ theorem even_case (r s : ℤ) (hrs : r * s ≠ 0) (hn : 23856 ≤ n)
 /-- **Lemma 6.2.**  For odd `z` with `δ z ≥ 3` fitting inside an `N`-point set with
 `N = 2q̃`, Boccara's criterion gives `z = A·B` with `A` of type `(q₁,q₂,q₃,1)` and
 `B` a full `N`-cycle; the coprimality of the orders then yields the word. -/
-theorem sparse_case (r s : ℤ) (hsodd : ¬ (2 ∣ s.natAbs))
+theorem sparse_case (hBoc : BoccaraStatement) (r s : ℤ) (hsodd : ¬ (2 ∣ s.natAbs))
     (z : Perm (Fin n)) (hodd : Odd (delta z)) (h3 : 3 ≤ delta z)
     (qt q₁ q₂ q₃ : ℕ) (hqt : qt.Prime) (hqts : ¬ (qt ∣ s.natAbs))
     (hNn : 2 * qt ≤ n) (hmdN : md z ≤ 2 * qt)
@@ -75,7 +76,7 @@ theorem sparse_case (r s : ℤ) (hsodd : ¬ (2 ∣ s.natAbs))
     (hsum : q₁ + q₂ + q₃ + 1 = 2 * qt) :
     ∃ x y : Perm (Fin n), x ^ r * y ^ s = z := by
   obtain ⟨A, B, hAtype, hBc, hBmd, hzAB⟩ :=
-    boccara_three z (2 * qt) q₁ q₂ q₃ hmdN hNn hsum hq₁.two_le hq₂.two_le hq₃.two_le h3 hodd
+    hBoc _ z (2 * qt) q₁ q₂ q₃ hmdN hNn hsum hq₁.two_le hq₂.two_le hq₃.two_le h3 hodd
   refine word_of_factorization hzAB ?_ ?_
   · -- `orderOf A = lcm (q₁,q₂,q₃)`, each coprime to `r`
     apply coprime_orderOf_of_cycleType

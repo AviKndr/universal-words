@@ -24,11 +24,14 @@ import UniversalWords.Windows
 import UniversalWords.Cases
 import UniversalWords.Dense
 import UniversalWords.Main
+import UniversalWords.Unconditional
 import UniversalWords.LowerBound
 
-#print axioms UniversalWords.kourovka_10_32
+-- The conditional main theorem and the whole §8 development are fully proved:
+#print axioms UniversalWords.kourovka_10_32_conditional
 #print axioms UniversalWords.exists_good_prime
 #print axioms UniversalWords.averaging
 #print axioms UniversalWords.not_universal
 #print axioms UniversalWords.L_eq_theta
-#print axioms UniversalWords.exists_dyadic_prime
+-- The quarantined unconditional form assumes the eight classical statements:
+#print axioms UniversalWords.kourovka_10_32

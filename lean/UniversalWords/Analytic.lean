@@ -1,10 +1,11 @@
 /-
-The analytic inputs to Proposition 6.5, as axioms.
+The analytic inputs to Proposition 6.5, as named statements.
 
-**Everything in this file is assumed, not proved**, and — unlike the previous
-revision of this development, where Proposition 6.5 itself was an axiom — every
-axiom here is a *published theorem*, restated in the form the paper uses.
-Proposition 6.5 is then **proved** from these in `GoodPrime.lean`.
+This file **states** five published theorems as propositions; it assumes
+nothing.  Proposition 6.5 (`exists_good_prime`) is proved in `GoodPrime.lean`
+from these statements taken as hypotheses, so it — and the conditional main
+theorem — use only Lean's standard axioms.  `Unconditional.lean` separately
+assumes these statements as axioms to recover unconditional forms.
 
 Sources:
 * `pi_upper`, `pi_lower` --- J. B. Rosser, L. Schoenfeld, *Approximate formulas
@@ -53,33 +54,33 @@ def r₃ (M : ℕ) : ℕ := (triples M).card
 noncomputable def SingSeries (k : ℕ) : ℝ :=
   ∏ p ∈ k.primeFactors.filter (fun p => p ≠ 2), (((p : ℝ) - 1) / ((p : ℝ) - 2))
 
-/-! ## The four axioms -/
+/-! ## The five statements -/
 
 /-- **Rosser--Schoenfeld (3.6)**: `π(x) < 1.25506 x/log x` for `x > 1`. -/
-axiom pi_upper (x : ℝ) (hx : 1 < x) :
-    ((primesIn 0 x).card : ℝ) ≤ 1.25506 * x / Real.log x
+def PiUpperStatement : Prop :=
+  ∀ (x : ℝ), 1 < x → ((primesIn 0 x).card : ℝ) ≤ 1.25506 * x / Real.log x
 
 /-- **Rosser--Schoenfeld (3.5)**: `π(x) > x/log x` for `x ≥ 17`. -/
-axiom pi_lower (x : ℝ) (hx : 17 ≤ x) :
-    x / Real.log x ≤ ((primesIn 0 x).card : ℝ)
+def PiLowerStatement : Prop :=
+  ∀ (x : ℝ), 17 ≤ x → x / Real.log x ≤ ((primesIn 0 x).card : ℝ)
 
 /-- **Montgomery--Vaughan (Brun--Titchmarsh)**: primes `≤ x` in a reduced residue
 class `a` mod `d` number at most `2x/(φ(d) log(x/d))`, for `x > d`. -/
-axiom brun_titchmarsh (d : ℕ) (hd : 0 < d) (a : ZMod d) (ha : IsUnit a)
-    (x : ℝ) (hx : (d : ℝ) < x) :
+def BrunTitchmarshStatement : Prop :=
+  ∀ (d : ℕ), 0 < d → ∀ (a : ZMod d), IsUnit a → ∀ (x : ℝ), (d : ℝ) < x →
     (((primesIn 0 x).filter (fun p : ℕ => (Nat.cast p : ZMod d) = a)).card : ℝ) ≤
       2 * x / ((Nat.totient d : ℝ) * Real.log (x / d))
 
 /-- **Vinogradov's three-primes theorem**, count form: for odd `M` beyond an
 ineffective threshold, `r₃(M) ≥ c₁ M²/log³M` for an absolute `c₁ > 0`. -/
-axiom vinogradov :
-    ∃ c₁ : ℝ, 0 < c₁ ∧ ∃ M₀ : ℕ, ∀ M : ℕ, M₀ ≤ M → Odd M →
-      c₁ * (M : ℝ) ^ 2 / (Real.log M) ^ 3 ≤ (r₃ M : ℝ)
+def VinogradovStatement : Prop :=
+  ∃ c₁ : ℝ, 0 < c₁ ∧ ∃ M₀ : ℕ, ∀ M : ℕ, M₀ ≤ M → Odd M →
+    c₁ * (M : ℝ) ^ 2 / (Real.log M) ^ 3 ≤ (r₃ M : ℝ)
 
 /-- **Halberstam--Richert Theorem 3.11** (upper-bound sieve for Goldbach counts):
 for even `k ≥ 4`, `r₂(k) ≤ C₂ · S(k) · k/log²k` for an absolute `C₂`. -/
-axiom sieve_r2 :
-    ∃ C₂ : ℝ, 0 < C₂ ∧ ∀ k : ℕ, Even k → 4 ≤ k →
-      (r₂ k : ℝ) ≤ C₂ * SingSeries k * k / (Real.log k) ^ 2
+def SieveR2Statement : Prop :=
+  ∃ C₂ : ℝ, 0 < C₂ ∧ ∀ k : ℕ, Even k → 4 ≤ k →
+    (r₂ k : ℝ) ≤ C₂ * SingSeries k * k / (Real.log k) ^ 2
 
 end UniversalWords
