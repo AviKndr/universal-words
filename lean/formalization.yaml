@@ -4,29 +4,30 @@ version: "v0.4"
 project:
   name: "Universality of the words x^r y^s in symmetric groups (Kourovka 10.32)"
   description: >-
-    Answer to Problem 10.32 of the Kourovka Notebook (posed by Yu. I.
-    Merzlyakov, 1986), in both directions. Positive direction: there are
-    constants C and N0 (C effective - the paper computes C = 4.65 for its
-    effective cases - while N0 is ineffective solely through Vinogradov's
-    three-primes theorem) such that for all nonzero integers r, s with
-    r or s odd, the word x^r y^s is universal on the symmetric group S_n
-    (every permutation is a value) whenever n >= N0 and n >= C * log m(r,s),
-    where m(r,s) is the product of the distinct primes dividing rs. This is
-    the S_n analogue, logarithmic in m, of the Brenner-Evans-Silberger bound
-    for A_n, replacing the previously known linear bound (Droste). Negative
-    direction, unconditionally: the logarithmic shape is optimal - with
-    r = lcm(1..n) and s its odd part, no element of order 3 in S_n is a value
-    of x^r y^s, while log m(r,s) equals the Chebyshev function theta(n). The
-    Lean development formalizes the entire proof of the accompanying paper
-    (also in this repository) on top of Mathlib. Its principal theorem,
-    UniversalWords.kourovka_10_32_conditional, is a fully proved implication
-    from eight explicitly stated published theorems (Herzog-Kaplan-Lev,
-    Boccara, three Rosser-Schoenfeld bounds, Montgomery-Vaughan's
-    Brun-Titchmarsh inequality, Vinogradov's three-primes theorem, and the
-    Halberstam-Richert sieve bound) and depends only on Lean's three standard
-    axioms, as does the optimality theorem UniversalWords.not_universal. A
-    quarantined module assumes the eight statements as axioms to derive the
-    unconditional form.
+    Answer to Problem 10.32 of the Kourovka Notebook, posed by Yu. I.
+    Merzlyakov in 1986 and still open in the Notebook's 21st edition (2026),
+    in both directions. Positive direction: there are constants C and N0 such
+    that for all nonzero integers r, s with r or s odd, the word x^r y^s is
+    universal on the symmetric group S_n (every permutation is a value)
+    whenever n >= N0 and n >= C * log m(r,s), where m(r,s) is the product of
+    the distinct primes dividing rs. This is the S_n analogue of the
+    logarithmic Brenner-Evans-Silberger bound for A_n; the best previous S_n
+    bound (Droste, 1986) was linear in m. The constant C is effective (the
+    paper gives 4.65 for its fully effective cases), while the threshold N0
+    is ineffective solely because the proof uses Vinogradov's three-primes
+    theorem. Negative direction, unconditional: the logarithmic shape is
+    optimal. For r = lcm(1..n) with s its odd part, no element of order 3 in
+    S_n is a value of x^r y^s, while log m(r,s) equals theta(n), the full
+    Chebyshev mass of the primes up to n. The Lean development formalizes the
+    paper's proof (the paper is in this repository) on top of Mathlib. Its
+    principal theorem, UniversalWords.kourovka_10_32_conditional, is a fully
+    proved implication from eight explicitly stated published theorems
+    (Herzog-Kaplan-Lev, Boccara, three Rosser-Schoenfeld bounds,
+    Montgomery-Vaughan's Brun-Titchmarsh inequality, Vinogradov's
+    three-primes theorem, and the Halberstam-Richert sieve bound) and depends
+    only on Lean's three standard axioms, as does the optimality theorem
+    UniversalWords.not_universal. A quarantined module assumes the eight
+    statements as axioms to recover the unconditional form.
   authors:
     - Avi Kondareddy
   responsible_maintainers:
