@@ -1,0 +1,1067 @@
+\pdfoutput=1
+\documentclass[11pt]{amsart}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={The universality of words x^r y^s in symmetric groups},
+  pdfauthor={Avi Kondareddy}}
+\numberwithin{equation}{section}
+\raggedbottom
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{mainthm}{Main Theorem}
+
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\md}{\mathrm{m}}   % moved points
+\newcommand{\cy}{\mathrm{c}}   % nontrivial cycles
+
+\title{The universality of words $x^ry^s$ in symmetric groups}
+\author{Avi Kondareddy}
+\date{August 25, 2026}
+\subjclass[2020]{Primary 20B30; Secondary 20D60, 11P32, 05A05}
+\keywords{word maps, universal words, symmetric groups, products of cycles,
+three-primes theorem}
+
+\begin{document}
+
+\begin{abstract}
+We answer Problem~10.32 of the Kourovka Notebook, posed by Yu.~I.~Merzlyakov in
+1986: for all nonzero integers $r,s$ at least one of which is odd, the word
+$x^ry^s$ is universal on the symmetric group $S_n$ --- every permutation is a
+value --- whenever $n\ge\max\{N_0,\,C\log m\}$, where $m=m(r,s)$ is the largest
+squarefree divisor of $rs$ and $C,N_0$ are absolute constants. This is the
+symmetric-group analogue of the alternating-group theorem of Brenner, Evans and
+Silberger, and it replaces Droste's bound $n\ge\max\{6,\,4m-4\}$, linear in $m$
+and the best known since 1986. Even targets, and odd targets moving at least
+$n/2$ points, are factored as products of two cycles of explicitly controlled
+prime-related lengths, via the Herzog--Kaplan--Lev two-cycle criterion and
+Chebyshev-type prime counting; this part of the argument is explicit and fully
+effective. For odd targets moving fewer than $n/2$ points we show that, for
+adversarial $r,s$, any such two-cycle factorization would encode prime
+constellations of twin-prime type. These targets are instead factored, inside a
+suitable subset of $\{1,\dots,n\}$, as a permutation of cycle type
+$(q_1,q_2,q_3,1)$ times a full cycle of even length, via Boccara's criterion for
+products with a full cycle; the primes $q_1,q_2,q_3$, none dividing $rs$, come
+from Vinogradov's three-primes theorem relative to the excluded set of primes of
+$rs$ --- the one ineffective ingredient. A complementary construction respecting
+the parity hypothesis ($r=\operatorname{lcm}(1,\dots,n)$, $s$ its odd part)
+forces every value of the word to have all cycle lengths powers of two; the
+constant therefore cannot be taken to be $1$, and the logarithmic shape is
+optimal for $S_n$, as it is for $A_n$.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+
+For which degrees $n$ is every permutation in $S_n$ a product of an $r$-th power
+and an $s$-th power? In the language of word maps: a word $w$ in the free group
+on $x,y$ is \emph{universal} on a group $G$ if the map $(x,y)\mapsto w(x,y)$
+sends $G\times G$ onto $G$, and the question asks when the two-letter power word
+$x^ry^s$, $rs\neq0$, is universal on $S_n$. Surjectivity questions for word maps
+are the noncommutative Waring problems of group theory: Ore's conjecture ---
+every element of a finite non-abelian simple group is a commutator, that is,
+the word $[x,y]$ is universal --- stood for nearly six decades before its
+resolution by Liebeck, O'Brien, Shalev and Tiep \cite{LOST}. For an arbitrary
+nontrivial word $w$, the theorems of Larsen--Shalev and Larsen--Shalev--Tiep
+\cite{LaSh,LST} show that the values of $w$ cover every sufficiently large such
+group in two steps: $w(G)^2=G$. For the power words one can ask for more --- genuine universality,
+in one step --- and the classical literature on products of conjugacy classes
+of $S_n$ makes the question concrete.
+
+What no general theorem gives is uniformity in the word. For $w=x^ry^s$ the
+threshold $N(w)$ of \cite{LaSh} carries no dependence on $(r,s)$ that one can
+read off, and the exponents can conspire against any fixed degree
+(\S\ref{sec:lower} exhibits the conspiracy). The right question, posed forty
+years ago, is quantitative: how must the degree grow with the arithmetic of
+$(r,s)$ for universality to set in? Write $m=m(r,s)$ for the largest squarefree
+divisor of $rs$ (so $m$ is the product of the distinct primes dividing $rs$),
+with the convention $m=1$ when $r,s\in\{-1,1\}$; the answer, it turns out, is
+governed by $m$ alone, and is logarithmic in it.
+
+Two papers in the same 1986 issue of the \emph{Proceedings of the AMS} frame the
+problem. Brenner, Evans and Silberger \cite{BES} proved that for every constant
+$c>8/5$ there is an $N_0(c)$ such that $x^ry^s$ is universal on $A_n$ whenever
+$n\ge\max\{N_0(c),\,c\log m\}$; they showed moreover that the constant cannot be
+taken to be $1$, so the logarithmic shape is optimal for $A_n$. Droste \cite{Droste}
+proved, among other things, that when at least one of $r,s$ is odd the word
+$x^ry^s$ is universal on $S_n$ for $n\ge\max\{6,\,4m-4\}$ --- a bound linear in
+$m$, hence exponentially weaker in $\log m$. Problem~10.32 of the Kourovka
+Notebook, contributed by Yu.~I.~Merzlyakov \cite{KN} to its tenth issue (1986)
+--- the same year as the two \emph{Proceedings} papers --- asks:
+
+\begin{quote}
+\emph{Find an analogous \textup{[}logarithmic\textup{]} bound for the degree of the
+symmetric group $S_n$ under hypothesis that at least one of the $r,s$ is odd:
+up to now, here only a more crude bound $n\ge\max\{6,4m(r,s)-4\}$ is known
+\textup{(}M.~Droste, Proc.\ Amer.\ Math.\ Soc., 96, no.~1 (1986),
+18--22\textup{)}.}
+\end{quote}
+
+The parity hypothesis is necessary: if $r$ and $s$ are both even then every value
+$x^ry^s$ is an even permutation, and the word is not universal on $S_n$ for any
+$n\ge 2$. This paper answers the problem in both directions: the logarithmic
+bound holds, and the logarithmic shape is optimal.
+
+\begin{mainthm}[answer to Kourovka Notebook Problem 10.32]
+There exist absolute constants $C$ and $N_0$ with the following property. For all
+nonzero integers $r,s$ at least one of which is odd, the word $x^ry^s$ is universal
+on the symmetric group $S_n$ whenever
+\[
+n\;\ge\;\max\{N_0,\;C\log m(r,s)\}.
+\]
+\end{mainthm}
+
+The logarithmic threshold is the natural one. The word sees only the primes
+dividing $rs$: a cycle of length coprime to $r$ is an $r$-th power
+(Lemma~\ref{lem:root}), so what the proofs must manufacture are cycle lengths up
+to $n$ avoiding a prescribed set of primes. That set has total logarithmic mass
+$\log m=\sum_{p\mid rs}\log p$, while by Chebyshev the primes up to $n$ have
+mass about $n$; so $n\asymp\log m$ is exactly the point at which the primes of
+$rs$ can no longer swallow every prime below $n$. The lower bound of
+\S\ref{sec:lower} shows the heuristic is sharp on the other side: taking
+$r=\operatorname{lcm}(1,\dots,n)$ (and $s$ its odd part) makes every prime up
+to $n$ divide $rs$ at cost $\log m=\theta(n)$, and $\theta(n)<n$ infinitely
+often --- the arithmetic of $rs$ really can cover every degree up to $n$.
+
+The constant $C$ produced by the proof is explicit but far from optimal; the
+threshold $N_0$ is ineffective, for the single reason that the proof invokes
+Vinogradov's three-primes theorem (see Remark~\ref{rem:effective}). For even
+targets, and for odd targets moving at least $n/2$ points, the proof is fully
+explicit and effective and gives $n\ge\max\{N_0',\,4.65\log m\}$ with an explicit
+$N_0'$; it is only the remaining case --- odd targets of small support --- that
+requires analytic input. For the complementary lower bound, an adaptation of the
+Brenner--Evans--Silberger examples that respects the parity hypothesis
+(\S\ref{sec:lower}) shows the constant cannot be taken to be $1$, so the
+logarithmic shape is optimal for $S_n$ just as for $A_n$.
+
+\subsection*{Why the symmetric group resisted}
+The argument of Brenner, Evans and Silberger runs through elements of order
+coprime to
+$m$: if every $z\in A_n$ is a product of two such elements, one wins by taking
+$r$-th and $s$-th roots inside the cyclic groups they generate. On $S_n$ this
+mechanism breaks at once for \emph{odd} targets: an odd permutation has at least
+one even-length cycle, so its order is even, and when $2\mid m$ no odd permutation
+of order coprime to $m$ exists at all. The two factors must therefore be treated
+asymmetrically --- the first need only be an $r$-th power, the second an $s$-th
+power --- and this is where the hypothesis enters: with $s$ odd, even-length cycles
+of length coprime to $s$ exist, and they carry the odd sign.
+
+A second, subtler obstruction governs the proof: the first dictated the
+asymmetry of the factors; this one dictates their shape. Products of \emph{two
+single cycles} are completely described by a criterion of Herzog, Kaplan and Lev
+(Theorem~\ref{thm:HKL} below): $z$ is a product of an $l_1$-cycle and an
+$l_2$-cycle essentially if and only if $l_1+l_2$ is at least $\md(z)+\cy(z)$ and of
+the same parity, and $|l_1-l_2|\le \md(z)-\cy(z)$, where $\md(z)$ is the number of
+moved points and $\cy(z)$ the number of nontrivial cycles. For an odd target the
+two cycle lengths must have opposite parities, so $|l_1-l_2|$ is odd and in
+particular nonzero; when $\delta(z):=\md(z)-\cy(z)$ is small --- think of a single
+transposition times a $3$-cycle --- the difference constraint forces the odd length
+$u$ and even length $v$ into an interval of bounded width, and $u$ must avoid the
+prime divisors of $r$, $v$ those of $s$. For adversarial $r,s$ this demands, in
+effect, a pair of primes a bounded distance apart in prescribed positions --- a
+constellation of twin-prime or binary-Goldbach strength, beyond reach. (Bounded
+gaps between primes are known after Zhang and Maynard, but not in prescribed
+windows, and the pair needed here involves the dilate $2^aq$ rather than a
+shift.)
+\emph{No choice of two single cycles can be proved to work for all such targets
+short of solving such a constellation problem}; this is made precise in
+Proposition~\ref{prop:obstruction}. The problem thus sits on the classical
+watershed of additive prime number theory: two cycle lengths give a binary
+constraint, of twin-prime strength, while a third summand would move the problem
+to ternary Goldbach, where Vinogradov's theorem waits.
+
+Our escape buys that third summand with a different factor shape. For odd $z$ of
+small support we write $z=AB$ inside an $N$-point subset, with $N=2\tilde q$ for
+a prime $\tilde q\nmid s$. The factor $B$ is a single $N$-cycle, hence an
+$s$-th power; the factor $A$, an $r$-th power, has cycle type $(q_1,q_2,q_3,1)$
+with $q_1,q_2,q_3$ primes summing to $N-1$, each avoiding the primes of $rs$.
+The existence of such a factorization is governed by a beautiful criterion of
+Boccara (Theorem~\ref{thm:Boccara}): a bound
+$\ell(\lambda)+\ell(\mu)\le N+1$ --- a genus bound, via the branched-cover
+correspondence noted in \S\ref{sec:prelim} --- together with a parity condition. The genus bound
+demands exactly $\delta(z)\ge 3$ --- and every odd non-transposition satisfies it
+--- while the parity condition is automatic for odd $z$. The three primes are
+produced by Vinogradov's theorem \emph{relative to an excluded set}: the number of
+representations $N-1=q_1+q_2+q_3$ is $\gg N^2/\log^3N$, while a sieve bound,
+averaged over the $\asymp n/\log n$ admissible choices of $\tilde q$, shows that
+representations meeting the primes of $rs$ are strictly fewer for at least one
+choice (indeed for most). The order of quantifiers is essential: $r,s$ are fixed
+before $\tilde q$ is chosen, so the excluded set cannot correlate with $N$.
+
+Three elementary observations make the case division clean. First, every
+nontrivial cycle
+moves at least two points, so $\cy(z)\le \md(z)/2$ and hence
+$\delta(z)\ge \md(z)/2$: \emph{small $\delta$ forces small support}, and the
+troublesome targets of the previous paragraph automatically leave at least half of
+$\{1,\dots,n\}$ free. Second, $\sgn(z)=(-1)^{\delta(z)}$, so $\delta$ is odd
+exactly for odd $z$, which is what makes the parity conditions in both criteria
+fall into place. Third, an odd $z$ with $\delta(z)=1$ is a bare transposition
+$\tau$, and then $y=\tau$, $x=1$ works outright since $\tau^s=\tau$ for odd $s$.
+
+\subsection*{Structure of the proof}
+After reductions (\S\ref{sec:red}) we may take $s$ odd and both exponents at least
+$2$ in absolute value. The theorem is then proved by three constructions:
+\begin{enumerate}
+\item[(I)] \emph{$z$ even, $z\neq 1$} (\S\ref{sec:even}): $z=(\text{$q$-cycle})
+\cdot(\text{$q$-cycle})$ for a single prime $q\nmid rs$ in $(3n/4,\,n]$. On the
+diagonal $l_1=l_2$ the Herzog--Kaplan--Lev difference constraint is vacuous, and
+Chebyshev-type counting supplies the prime as soon as $n\ge4.5\log m$.
+\item[(II)] \emph{$z$ odd, $\md(z)\ge n/2$} (\S\ref{sec:dense}): $z=(\text{$u$-cycle})
+\cdot(\text{$v$-cycle})$ with $u$ a prime not dividing $r$ in $(3n/4,\,n]$ and
+$v=2^aq'$ for a prime $q'\nmid s$ in a dyadic rescaling
+$(3n/2^{a+2},\,n/2^a]$ of the same window, $1\le a\le5$. Here
+$|u-v|<n/4\le\delta(z)$ and $u+v>3n/2\ge \md(z)+\cy(z)$, and the counting needs
+$n\ge4.65\log m$.
+\item[(III)] \emph{$z$ odd, $\md(z)<n/2$, $\delta(z)\ge3$} (\S\ref{sec:sparse}):
+the Boccara factorization described above, on an $N$-point set with
+$N=2\tilde q\in(n/2,\,n]$.
+\end{enumerate}
+Section~\ref{sec:proof} assembles the theorem, \S\ref{sec:lower} proves the
+complementary lower bound, and \S\ref{sec:remarks} closes with a synthesis and
+remarks on the shapes of the factors, effectivity, and constants.
+
+\subsection*{Relation to the literature}
+As discussed above, the general word-map theorems \cite{LaSh,LST} are
+qualitative in the parameters of the word: for $w=x^ry^s$ they give no
+uniformity of $N(w)$ in $(r,s)$, and in particular no bound of the shape
+$n\gg\log m(r,s)$, which is the point of Problem~10.32. The complementary
+literature on explicit factorization --- products of two prescribed conjugacy
+classes (Bertram \cite{Bertram}; Boccara \cite{Boccara82}; Herzog, Kaplan and
+Lev \cite{HKL}; the survey material in \cite{Petronio}) --- provides exactly the
+combinatorial control needed here, and this paper joins those criteria to
+classical analytic number theory at a single point. The content lies in locating
+that point --- Proposition~\ref{prop:obstruction} shows the analytic input is
+unavoidable for any two-single-cycle approach, not merely convenient --- and in
+choosing a factor shape for which the input needed is ternary rather than
+binary.
+
+\section{Preliminaries}\label{sec:prelim}
+
+\subsection{Notation}
+Throughout, $n$ denotes the degree of the symmetric group $S_n$ and $z\in S_n$ a
+target permutation. We write $\supp(z)$ for the set of moved points,
+$\md(z)=|\supp(z)|$, $\cy(z)$ for the number of cycles of length at least $2$, and
+\[
+\delta(z)\;=\;\md(z)-\cy(z).
+\]
+A \emph{cycle type} on an $N$-point set $\Omega$ is a partition $\lambda\vdash N$
+in which fixed points are recorded as parts equal to $1$; we write $\ell(\lambda)$
+for the total number of parts, fixed points included, and $C_\lambda$ for the
+conjugacy class of $\Sym(\Omega)$ with that type. For $r,s$ we set
+$m=m(r,s)$ as in the introduction and
+\[
+L\;=\;\log m\;=\;\sum_{p\mid rs}\log p ,
+\]
+sums and products over $p$ always ranging over primes. All logarithms are natural.
+
+\begin{lemma}\label{lem:elem}
+For every $z\in S_n$:
+\begin{enumerate}
+\item $\sgn(z)=(-1)^{\delta(z)}$; in particular $z$ is odd if and only if
+$\delta(z)$ is odd.
+\item $\cy(z)\le \md(z)/2$, hence $\delta(z)\ge \md(z)/2\ge \cy(z)$.
+\item If $z$ is odd and $\delta(z)=1$ then $z$ is a transposition.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+An $\ell$-cycle has sign $(-1)^{\ell-1}$; multiplying over the nontrivial cycles
+of $z$, whose lengths sum to $\md(z)$ and whose number is $\cy(z)$, gives (1).
+Each nontrivial cycle moves at least $2$ points, which is (2). For (3),
+$\delta(z)=1$ and (2) give $\md(z)\le 2$, so $z$ moves exactly two points.
+\end{proof}
+
+\subsection{Roots}
+The next lemma is the standard fact about powers of cycles (see, e.g.,
+\cite[\S4.8]{Wilf}: a cycle of length $\ell$ raised to the $t$-th power is a
+product of $\gcd(\ell,t)$ cycles of length $\ell/\gcd(\ell,t)$).
+
+\begin{lemma}\label{lem:root}
+Let $\sigma\in S_n$ be a product of pairwise disjoint cycles of lengths
+$\ell_1,\dots,\ell_k$, and let $t$ be a nonzero integer with $\gcd(\ell_i,t)=1$
+for all $i$. Then there is $x\in S_n$ with $\supp(x)=\supp(\sigma)$ and
+$x^t=\sigma$.
+\end{lemma}
+
+\begin{proof}
+It suffices to treat a single $\ell$-cycle $\gamma$ and multiply the resulting
+roots, which are disjoint. Choose $a$ with $at\equiv 1\pmod{\ell}$; then
+$(\gamma^a)^t=\gamma^{at}=\gamma$ since $\gamma^\ell=1$, and $\gamma^a$ is again an
+$\ell$-cycle on the same support because $\gcd(a,\ell)=1$.
+\end{proof}
+
+\subsection{Two factorization criteria}
+The first criterion characterizes products of two single cycles. It was proved by
+Herzog, Kaplan and Lev; the case of two cycles of given lengths goes back to
+Boccara \cite{Boccara80}, and the two-$l$-cycle case to Bertram \cite{Bertram}.
+
+\begin{theorem}[Herzog--Kaplan--Lev {\cite[Theorem~7]{HKL}}]\label{thm:HKL}
+Let $\sigma\in S_n$, $\sigma\neq 1$, and let $n\ge l_1\ge l_2\ge 2$ be integers.
+Then $\sigma$ is a product of an $l_1$-cycle and an $l_2$-cycle in $S_n$ if and
+only if one of the following holds:
+\begin{enumerate}
+\item[(a)] $\sigma$ has exactly two nontrivial cycles, and their lengths are $l_1$
+and $l_2$; or
+\item[(b)] $l_1+l_2\ge \md(\sigma)+\cy(\sigma)$, \quad
+$l_1+l_2\equiv \md(\sigma)+\cy(\sigma) \pmod 2$, \quad and \quad
+$l_1-l_2\le \md(\sigma)-\cy(\sigma)$.
+\end{enumerate}
+\end{theorem}
+
+We use the sufficiency of (b) throughout; the necessity direction enters only in
+the obstruction Proposition~\ref{prop:obstruction}. Note that if $\sigma=AB$ then
+also $\sigma=B\,(B^{-1}AB)$, so the two lengths may be realized in either order; we
+use this freedom silently to put the $r$-th-power factor first.
+
+The second criterion characterizes products of an arbitrary class with the class
+of full cycles. It is due to Boccara \cite{Boccara82}; it is also equivalent, via
+the Hurwitz monodromy correspondence, to the realizability of branched covers of
+the sphere with three branch points one of which is totally ramified, proved by
+Thom for the sphere and by Edmonds, Kulkarni and Stong in general \cite{Thom,EKS}
+(see \cite[Theorem~2.1]{Petronio} for a modern statement).
+
+\begin{theorem}[Boccara {\cite{Boccara82}}]\label{thm:Boccara}
+Let $\Omega$ be a set of size $N\ge 2$, let $\lambda\vdash N$ be a cycle type
+(fixed points counted as parts $1$), and let $z\in\Sym(\Omega)$ have cycle type
+$\mu\vdash N$. Then $z=AB$ for some $A\in C_\lambda$ and some $N$-cycle $B$ on
+$\Omega$ if and only if
+\[
+\ell(\lambda)+\ell(\mu)\;\le\;N+1
+\qquad\text{and}\qquad
+\ell(\lambda)+\ell(\mu)\;\equiv\;N+1\;\pmod 2 .
+\]
+\end{theorem}
+
+\begin{remark}\label{rem:machine}
+Both criteria have been verified mechanically by exhaustive computation:
+Theorem~\ref{thm:HKL} over all of $S_7$ and $S_8$ (all $1618$ triples (cycle
+type, $l_1$, $l_2$) with $2\le l_1,l_2\le n$, the identity type included as a
+sanity case), and Theorem~\ref{thm:Boccara} for all $N\le 8$ (all ordered pairs
+$(\lambda,\mu)$ of types, both directions of the equivalence), with no
+discrepancies. We mention this because both statements are used here in
+load-bearing ways and details of \cite{Boccara82} circulate imprecisely --- its
+volume number, for instance, appears incorrectly in more than one recent
+bibliography.
+\end{remark}
+
+\subsection{Prime counting}
+Let $\theta(x)=\sum_{p\le x}\log p$ and $\pi(x)$ the usual counting functions. We
+use the classical explicit bounds of Rosser and Schoenfeld: \eqref{eq:RSup} is
+\cite[Theorem~9, eq.~(3.32)]{RS}, \eqref{eq:piup} and \eqref{eq:pilow} are
+\cite[eqs.~(3.6) and (3.5)]{RS} respectively, and \eqref{eq:RSlow} is from their
+later paper
+\cite[Corollary to Theorem~6]{RS75}:
+\begin{align}
+\theta(x)&\;<\;1.01624\,x  &&\text{for all } x>0, \label{eq:RSup}\\
+\theta(x)&\;>\;0.985\,x    &&\text{for } x> 11927, \label{eq:RSlow}\\
+\pi(x)&\;<\;1.25506\,\frac{x}{\log x} &&\text{for } x>1, \label{eq:piup}\\
+\pi(x)&\;>\;\frac{x}{\log x} &&\text{for } x\ge 17. \label{eq:pilow}
+\end{align}
+
+\begin{lemma}[Prime windows]\label{lem:window}
+Let $0<\alpha<\beta\le 1$ and put $K=0.985\,\beta-1.01624\,\alpha$, assumed
+positive. Let $Q$ be any set of primes with $\sum_{q\in Q}\log q\le L$. If
+$n> 11927/\beta$ and $Kn>L$, then the interval $(\alpha n,\,\beta n]$ contains a
+prime not belonging to $Q$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:RSup} and \eqref{eq:RSlow},
+$\sum_{\alpha n<p\le\beta n}\log p=\theta(\beta n)-\theta(\alpha n)
+> 0.985\beta n-1.01624\alpha n=Kn>L$. The primes of $Q$ in the window contribute
+at most $\sum_{q\in Q}\log q\le L$ to the left side, so some prime of the window
+lies outside $Q$.
+\end{proof}
+
+We record the windows we use, with $K$ rounded down:
+\begin{equation}\label{eq:windows}
+\begin{gathered}
+(\tfrac34 n,\,n]:\ K=0.2228;\\
+\text{rescaled, } (3n/2^{a+2},\,n/2^a]:\ K=0.2228/2^a
+\quad(a\ge1,\ n>11927\cdot2^a).
+\end{gathered}
+\end{equation}
+In particular the base window contains a prime avoiding any prescribed set of
+primes of log-weight at most $L$ provided $n\ge 23856$ and $n\ge 4.5\,L$; the
+rescaled windows are used, five at a time, in \S\ref{sec:dense}.
+
+\begin{lemma}\label{lem:omega}
+For every integer $m\ge 2$ with $L=\log m$,
+\[
+\omega(m)\;\le\;1.28\,\frac{L}{\log L}\;+\;1429 ,
+\]
+where $\omega(m)$ is the number of distinct prime divisors of $m$ (and the first
+term is read as $0$ when $L\le 1$).
+\end{lemma}
+
+\begin{proof}
+Let $\omega=\omega(m)$ and let $q_\omega$ denote the $\omega$-th prime. The $i$-th
+smallest prime divisor of $m$ is at least the $i$-th prime, so
+$L\ge\theta(q_\omega)$. If $q_\omega\le11927$ then
+$\omega=\pi(q_\omega)\le\pi(11927)=1429$. Otherwise $q_\omega>11927$ and
+\eqref{eq:RSlow} gives
+$q_\omega\le L/0.985\le 1.0153\,L$, and \eqref{eq:piup} gives
+$\omega=\pi(q_\omega)\le\pi(1.0153L)<1.25506\cdot
+1.0153\,L/\log(1.0153L)<1.28\,L/\log L$.
+\end{proof}
+
+\subsection{Analytic input}
+For a positive integer $k$ let
+\begin{align*}
+r_2(k)&=\#\{(p_1,p_2):\ p_i \text{ prime},\ p_1+p_2=k\},\\
+r_3(k)&=\#\{(p_1,p_2,p_3):\ p_i \text{ prime},\ p_1+p_2+p_3=k\}
+\end{align*}
+count ordered representations as sums of primes. We use the following two
+classical facts.
+
+\begin{theorem}[Vinogradov \cite{Vino}; see {\cite[Theorem~3.4]{Vaughan}}]
+\label{thm:vino}
+There are constants $c_1>0$ and $M_0$ such that $r_3(M)\ge c_1 M^2/\log^3 M$ for
+every odd $M\ge M_0$.
+\end{theorem}
+
+\begin{theorem}[Sieve bound; see {\cite[Theorem~3.11]{HR}}]\label{thm:sieve}
+There is an absolute constant $C_2$ such that for every even $k\ge 4$,
+\[
+r_2(k)\;\le\;C_2\,S(k)\,\frac{k}{\log^2 k},
+\qquad\text{where}\quad
+S(k)\;=\;\prod_{p\mid k,\ p>2}\frac{p-1}{p-2} .
+\]
+For odd $k$, trivially $r_2(k)\le 2$ (one summand must be $2$).
+\end{theorem}
+
+We also use the Brun--Titchmarsh inequality in the form of Montgomery and Vaughan
+\cite[Theorem~2]{MV}: for coprime $a,d$ and $x>d$,
+\begin{equation}\label{eq:BT}
+\pi(x;d,a)\;<\;\frac{2x}{\varphi(d)\log(x/d)} ,
+\end{equation}
+where $\pi(x;d,a)$ counts the primes $p\le x$ with $p\equiv a\pmod d$.
+
+\begin{remark}
+Theorem~\ref{thm:vino} is the one ineffective ingredient of this paper: $M_0$ is
+not computable from the classical proof (Siegel--Walfisz). The constant $c_1$ is
+an explicit number, and effective versions of the three-primes theorem exist
+(Helfgott \cite{Helfgott}); see Remark~\ref{rem:effective}.
+\end{remark}
+
+\section{Reductions}\label{sec:red}
+
+\begin{lemma}\label{lem:red}
+Let $G$ be a group and $r,s$ nonzero integers.
+\begin{enumerate}
+\item $x^ry^s$ is universal on $G$ if and only if $x^sy^r$ is.
+\item Universality of $x^ry^s$ on $G$ depends only on $(|r|,|s|)$.
+\item If $|r|=1$ or $|s|=1$ then $x^ry^s$ is universal on every group.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1) Given $z\in G$, apply universality of $x^sy^r$ to $z^{-1}$: if
+$z^{-1}=a^sb^r$ then $z=b^{-r}a^{-s}=(b^{-1})^r(a^{-1})^s$. (2) Substitute
+$x\mapsto x^{-1}$, $y\mapsto y^{-1}$ as needed. (3) If $|s|=1$ take $x=1$,
+$y=z^{\pm1}$; if $|r|=1$ take $y=1$, $x=z^{\pm 1}$.
+\end{proof}
+
+Since $m(r,s)=m(s,r)$ and $m$ depends only on $(|r|,|s|)$, Lemma~\ref{lem:red}
+allows us to assume for the remainder of the paper:
+\begin{equation}\label{eq:standing}
+r\ge 2,\qquad s\ge 3 \text{ odd},
+\end{equation}
+the excluded cases being trivially universal. (If the odd exponent among $r,s$ is
+the first one, swap by Lemma~\ref{lem:red}(1); then drop signs by (2); if either
+exponent is $1$ use (3), which in particular covers $m=1$.)
+
+Two families of targets are handled at once. If $z=1$, take $x=y=1$. If $z$ is a
+transposition $\tau$, take $x=1$ and $y=\tau$: since $s$ is odd,
+$y^s=\tau^s=\tau=z$. By Lemma~\ref{lem:elem}(3) these dispose of all odd $z$ with
+$\delta(z)=1$.
+
+\section{Even targets}\label{sec:even}
+
+\begin{proposition}\label{prop:even}
+Assume \eqref{eq:standing}, $n\ge 23856$ and $n\ge4.5\,L$. Then every even
+$z\in S_n$, $z\neq 1$, satisfies $z=x^ry^s$ for some $x,y\in S_n$.
+\end{proposition}
+
+\begin{proof}
+Under \eqref{eq:standing} the odd number $s\ge3$ contributes an odd prime to $m$,
+so $m\ge 3$, $L\ge\log 3>0$, and
+$Kn\ge 0.2228\cdot4.5\,L>L$ for the window $(\tfrac34n,n]$ of
+\eqref{eq:windows}. By Lemma~\ref{lem:window}, applied to this window with $Q$
+the set of primes dividing $rs$, there is a prime
+\[
+q\in(\tfrac34 n,\,n],\qquad q\nmid rs .
+\]
+We check condition (b) of Theorem~\ref{thm:HKL} for $l_1=l_2=q$. Since
+$\cy(z)\le \md(z)/2$ (Lemma~\ref{lem:elem}) and $\md(z)\le n$,
+\[
+l_1+l_2=2q>\tfrac32n\ \ge\ \md(z)+\cy(z) .
+\]
+As $z$ is even, $\delta(z)=\md(z)-\cy(z)$ is even, so $\md(z)+\cy(z)$ is even as
+well, matching $l_1+l_2=2q$. Finally $l_1-l_2=0\le \md(z)-\cy(z)$, the latter
+being positive since $z\neq 1$. Hence $z=AB$ with $A,B$ both $q$-cycles. Since
+$q\nmid rs$, Lemma~\ref{lem:root} provides $x$ with $x^r=A$ and $y$ with $y^s=B$,
+and $x^ry^s=AB=z$.
+\end{proof}
+
+\section{Odd targets of large support}\label{sec:dense}
+
+\begin{proposition}\label{prop:dense}
+Assume \eqref{eq:standing}, $n\ge 381700$ and $n\ge4.65\,L$. Then every odd
+$z\in S_n$ with $\md(z)\ge n/2$ satisfies $z=x^ry^s$ for some $x,y\in S_n$.
+\end{proposition}
+
+\begin{proof}
+Write $\delta=\md(z)-\cy(z)$. By Lemma~\ref{lem:elem}(2),
+$\delta\ge \md(z)/2\ge n/4$. As in Proposition~\ref{prop:even}, $L>0$, so
+$0.2228\,n\ge0.2228\cdot4.65\,L>L$, and Lemma~\ref{lem:window} applied to the
+window $(\tfrac34n,n]$ with $Q=\{p:p\mid r\}$ yields a prime
+\[
+u\in(\tfrac34n,\,n],\qquad u\nmid r
+\]
+(note $u$ is odd since $u>3$).
+
+For the even factor we use the dyadic windows of \eqref{eq:windows}. Suppose
+that for every $a\in\{1,\dots,5\}$, every prime in
+$W_a=(3n/2^{a+2},\,n/2^a]$ divides $s$. The intervals $W_a$ are pairwise
+disjoint (the top of $W_{a+1}$ is $n/2^{a+1}<3n/2^{a+2}$, the bottom of $W_a$),
+and $n/2^a>11927$ for $a\le5$ since $n\ge381700>11927\cdot2^5$; so, applying
+\eqref{eq:RSup} and \eqref{eq:RSlow} to each window and summing,
+\[
+L\;\ge\;\sum_{a=1}^{5}\bigl(\theta(n/2^a)-\theta(3n/2^{a+2})\bigr)
+\;\ge\;\sum_{a=1}^{5}\frac{0.2228}{2^a}\,n\;=\;\frac{31}{32}\cdot0.2228\,n
+\;>\;0.2158\,n ,
+\]
+contradicting $n\ge4.65\,L$ (as $4.65\cdot0.2158>1$). Hence there are $a\le5$
+and a prime $q'\in W_a$ with $q'\nmid s$; put
+\[
+v\;=\;2^aq'\;\in\;(\tfrac34n,\,n] ,
+\]
+an even number with $\gcd(v,s)=1$ ($s$ is odd and $q'\nmid s$).
+
+We check Theorem~\ref{thm:HKL}(b) for the pair $\{u,v\}$ (in whichever order makes
+the lengths nonincreasing). First,
+$u+v>\tfrac32n\ge\tfrac32\md(z)\ge\md(z)+\cy(z)$, so
+$u+v>\md(z)+\cy(z)$. Second, $u+v$ is odd (one length even, one odd) and
+$\md(z)+\cy(z)\equiv \md(z)-\cy(z)=\delta \pmod 2$ is
+odd as well since $z$ is odd; so
+$u+v\ge \md(z)+\cy(z)$ with the correct parity. Third, since
+$u,v\in(\tfrac34n,\,n]$,
+\[
+|u-v|\;<\;\tfrac14 n\;\le\;\delta\;=\;\md(z)-\cy(z) .
+\]
+Both lengths are at least $2$ and at most $n$, and $z\neq1$ as $z$ is odd. Hence
+$z=AB$ with $A$ a $u$-cycle and $B$ a $v$-cycle. Since $\gcd(u,r)=1$ and
+$\gcd(v,s)=1$, Lemma~\ref{lem:root} gives
+$x^r=A$, $y^s=B$, so $z=x^ry^s$.
+\end{proof}
+
+\section{Odd targets of small support: obstruction and escape}\label{sec:sparse}
+
+This case is the heart of the paper: it is here that the two-single-cycle
+method provably demands twin-prime-type input
+(Proposition~\ref{prop:obstruction} below), and here that the ternary
+construction enters.
+Throughout this section we assume \eqref{eq:standing} and consider odd targets
+$z$ with
+\[
+\md(z)<n/2,\qquad \delta(z)\ge 3 .
+\]
+
+\subsection{The two-cycle obstruction}\label{ssec:obstruction}
+We first make precise the claim of the introduction that no analogue of
+Propositions~\ref{prop:even} and \ref{prop:dense} --- two single cycles, one an
+$r$-th power and one an $s$-th power --- can cover the present case. This is the
+one place where the necessity direction of Theorem~\ref{thm:HKL} is used; nothing
+later depends on it.
+
+\begin{proposition}[two-cycle obstruction]\label{prop:obstruction}
+Let $r$ be even and $s$ odd, and suppose every prime $p\le x$ divides $r$ and
+every odd prime $p\le x$ divides $s$, where $x\ge 5$. Let $z\in S_n$ be a
+$4$-cycle, and suppose $z=AB$ where $A$ is an $l_1$-cycle that is an $r$-th
+power in $S_n$ and $B$ is an $l_2$-cycle that is an $s$-th power
+($l_1,l_2\ge2$). Then $l_1$ is odd with every prime factor exceeding $x$, $l_2$
+is even with every odd prime factor exceeding $x$, and $|l_1-l_2|\le 3$. In
+particular, if $n<x^2$, then $l_1$ is a prime and $l_2$ is $2^a$ or $2^aq$ with
+$q>x$ prime.
+\end{proposition}
+
+\begin{proof}
+An $l$-cycle is a $t$-th power in $S_n$ if and only if $\gcd(l,t)=1$: each cycle
+of $w$ of length $\ell$ contributes $\gcd(\ell,t)$ cycles of length
+$\ell/\gcd(\ell,t)$ to $w^t$, so a single $l$-cycle arises only from a single
+$\ell$-cycle with $\ell=l$ and $\gcd(l,t)=1$. Hence $\gcd(l_1,r)=1$ and
+$\gcd(l_2,s)=1$, giving the prime-factor claims. Since $r$ is even, $A$ is an
+even permutation, so $l_1$ is odd; since $z$ is odd, $l_2$ is even. A $4$-cycle
+has one nontrivial cycle, so case (a) of Theorem~\ref{thm:HKL} is impossible, and
+the necessity of case (b) gives $|l_1-l_2|\le \md(z)-\cy(z)=3$. If $n<x^2$, a
+length at most $n$ whose (odd) prime factors all exceed $x$ has at most one of
+them.
+\end{proof}
+
+Taking $r=\prod_{p\le x}p$ and $s=\prod_{2<p\le x}p$, so that
+$\log m=\theta(x)\asymp x$, a two-single-cycle proof of the Main Theorem would
+thus produce, for every sufficiently large $x$, primes $u,q\in(x,n]$ with
+$u-2^aq\in\{\pm1,\pm3\}$ (or $u$ within $3$ of a power of $2$), where
+$n\asymp x$: a constellation problem of twin-prime type, involving the dilate
+$2^aq$ rather than a shift, and beyond any current method. (Of course the
+$4$-cycle itself is an $s$-th power for odd $s$ --- the obstruction concerns the
+two-single-cycle method with both cycles nontrivial, not membership in the image
+of the word map.)
+
+\subsection{The construction, given a good prime}
+Call a prime $\tilde q$ \emph{good} (for the fixed data $r,s,n$) if
+\begin{enumerate}
+\item[(G1)] $n/4<\tilde q\le n/2$ and $\tilde q\nmid s$;
+\item[(G2)] the odd number $M=2\tilde q-1$ admits a representation
+$M=q_1+q_2+q_3$ with $q_1,q_2,q_3$ primes none of which divides $rs$.
+\end{enumerate}
+
+\begin{lemma}\label{lem:construction}
+If a good prime $\tilde q$ exists, then every odd $z\in S_n$ with $\md(z)<n/2$ and
+$\delta(z)\ge 3$ satisfies $z=x^ry^s$.
+\end{lemma}
+
+\begin{proof}
+Put $N=2\tilde q\in(n/2,\,n]$; since $\md(z)<n/2<N\le n$, we may choose
+$\Omega\subseteq\{1,\dots,n\}$ with $\supp(z)\subseteq\Omega$ and $|\Omega|=N$.
+Let $q_1+q_2+q_3=N-1$ be as in (G2) and set
+\[
+\lambda=(q_1,q_2,q_3,1)\ \vdash\ N,\qquad \ell(\lambda)=4 .
+\]
+Let $\mu\vdash N$ be the type of $z$ on $\Omega$; it consists of the $\cy(z)$
+nontrivial cycles of $z$ together with $N-\md(z)$ fixed points, so
+$\ell(\mu)=\cy(z)+N-\md(z)=N-\delta(z)$. Then
+\[
+\ell(\lambda)+\ell(\mu)\;=\;N+4-\delta(z)\;\le\;N+1
+\iff \delta(z)\ge 3,
+\]
+which holds; and modulo $2$,
+\[
+\ell(\lambda)+\ell(\mu)\;=\;N+4-\delta(z)\;\equiv\;N+1
+\iff \delta(z)\equiv 3\equiv 1 ,
+\]
+which holds since $z$ is odd (Lemma~\ref{lem:elem}(1)). By
+Theorem~\ref{thm:Boccara} there are $A\in C_\lambda$ and an $N$-cycle $B$ on
+$\Omega$ with $AB=z$ (using, as noted after Theorem~\ref{thm:HKL}, the freedom to put the
+$C_\lambda$-factor first). The nontrivial cycles of $A$ have prime lengths
+$q_1,q_2,q_3$, none dividing $r$, so Lemma~\ref{lem:root} gives $x$ with $x^r=A$.
+The factor $B$ is an $N$-cycle with $N=2\tilde q$, and $\gcd(N,s)=1$ since $s$ is
+odd and $\tilde q\nmid s$; Lemma~\ref{lem:root} gives $y$ with $y^s=B$. Extending
+by the identity off $\Omega$, $x^ry^s=AB=z$.
+\end{proof}
+
+\subsection{Averaging the singular series}
+It remains to produce a good prime. For any \emph{single} candidate $M$ the sieve
+bound of Theorem~\ref{thm:sieve} loses a factor $\asymp\log n$ against $r_3(M)$
+when $rs$ has many prime divisors (see Remark~\ref{rem:avg}); the remedy is to
+average over a full window of candidates. Let
+\[
+W\;=\;\{\tilde q \text{ prime}:\ (n+2)/4<\tilde q\le n/2\} ,
+\]
+the lower endpoint chosen so that $M=2\tilde q-1>n/2$ for every $\tilde q\in W$.
+
+\begin{lemma}\label{lem:Wsize}
+For $n\ge 10^8$, $\ |W|\ \ge\ 0.15\,n/\log n$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:pilow}, $\pi(n/2)>(n/2)/\log(n/2)>n/(2\log n)$. By \eqref{eq:piup}
+and $\log(n/4)\ge 0.9\log n$ (valid for $n\ge 4^{10}$),
+$\pi((n+2)/4)\le\pi(n/4)+1<1.25506\,(n/4)/(0.9\log n)+1<0.349\,n/\log n$.
+Subtract.
+\end{proof}
+
+\begin{lemma}[Singular series on average]\label{lem:avg}
+There is an absolute constant $C_3$ (one may take $C_3=4$ for $n\ge 10^8$) such
+that for every integer $b$ with $0\le b\le n+2$,
+\[
+\sum_{\substack{\tilde q\in W\\ 2\tilde q-b\ \mathrm{even},\ \ge 4}}
+S(2\tilde q-b)\;\le\;C_3\,\frac{n}{\log n},
+\]
+with $S(\cdot)$ as in Theorem~\ref{thm:sieve}.
+\end{lemma}
+
+\begin{proof}
+For even $k\ge 4$ expand the product: writing $g$ for the multiplicative function
+supported on odd squarefree integers with $g(p)=1/(p-2)$,
+\[
+S(k)\;=\;\prod_{p\mid k,\,p>2}\Bigl(1+\frac1{p-2}\Bigr)
+\;=\;\sum_{\substack{d\mid k\\ d \text{ odd squarefree}}} g(d) .
+\]
+Write $\Sigma$ for the sum in the statement; its arguments $k=2\tilde q-b$ all
+satisfy $4\le k\le n$, so every divisor of such a $k$ is at most $n$. Hence,
+interchanging sums,
+\[
+\Sigma
+\;\le\;\sum_{\substack{d\le n\\ d \text{ odd squarefree}}} g(d)\,
+\#\{\tilde q\in W:\ 2\tilde q\equiv b \pmod d\}.
+\]
+For each odd $d$ the congruence $2\tilde q\equiv b\pmod d$ determines a single
+residue class $a_d$ modulo $d$. Split at $D=n^{1/3}$.
+
+If $d\le D$: when $\gcd(a_d,d)>1$, at most $\omega(d)\le\log d$ primes lie in the
+class; when $\gcd(a_d,d)=1$, Brun--Titchmarsh \eqref{eq:BT} with $x=n/2$ gives,
+for $n\ge 10^8$,
+\[
+\#\{\cdot\}\;\le\;\pi(n/2;d,a_d)\;<\;\frac{n}{\varphi(d)\log(n/(2d))}
+\;\le\;\frac{n}{0.6\,\varphi(d)\log n}
+\]
+using $\log(n/(2d))\ge\tfrac23\log n-\log2\ge0.6\log n$. Since
+$\sum_{d \text{ odd squarefree}} g(d)/\varphi(d)
+=\prod_{p>2}\bigl(1+\tfrac1{(p-2)(p-1)}\bigr)<1.75$,
+the total contribution of $d\le D$ is at most
+$\tfrac{1.75}{0.6}\,n/\log n+\sum_{d\le D}g(d)\log d
+\le 2.92\,n/\log n+e^{1.2}\log^2\!D$,
+using $\sum_{d\le x}g(d)\le\prod_{p\le x,\,p>2}(1+\tfrac1{p-2})\le e^{1.2}\log x$
+for $x\ge 10$ (take logarithms and use
+$\sum_{2<p\le x}1/(p-2)\le\log\log x+1.2$), so that
+$\sum_{d\le D}g(d)\log d\le \log D\sum_{d\le D}g(d)\le e^{1.2}\log^2\!D
+\le0.37\log^2 n$.
+
+If $d>D$: crudely $\#\{\tilde q\in W:\ 2\tilde q\equiv b\pmod d\}\le n/(4d)+1$.
+Since $\sum_d g(d)/\sqrt d=\prod_{p>2}\bigl(1+\tfrac1{\sqrt p\,(p-2)}\bigr)<2.33$,
+\[
+\sum_{D<d\le n}g(d)\Bigl(\frac n{4d}+1\Bigr)
+\;\le\;\frac n4\cdot\frac{2.33}{\sqrt D}\;+\;\sum_{d\le n}g(d)
+\;\le\;0.59\,n^{5/6}\;+\;e^{1.2}\log n .
+\]
+The three secondary terms $0.37\log^2n$, $0.59\,n^{5/6}$ and $e^{1.2}\log n$,
+divided by $n/\log n$, are each decreasing for $n\ge10^8$, and at $n=10^8$ they
+total less than $0.51\,n/\log n$; hence
+$\Sigma\le 2.92\,n/\log n+0.51\,n/\log n<4\,n/\log n$.
+\end{proof}
+
+\begin{proposition}\label{prop:good}
+There are absolute constants $C^*$ and $N^*$ (with $C^*$ effective given $C_2$ of
+Theorem~\ref{thm:sieve} and $c_1$ of Theorem~\ref{thm:vino}, and $N^*$
+ineffective) such that: if $n\ge N^*$ and $n\ge C^*L$, then a good prime
+$\tilde q\in W$ exists.
+\end{proposition}
+
+\begin{proof}
+We discard the bad elements of $W$ and count what remains. Set
+$\tilde\omega=\#\{p\le n: p\mid rs\}\le\omega(m)$. Assume $n\ge C^*L$ with
+$C^*\ge 100$ and $n\ge (C^*)^2$, so that $\log(n/C^*)\ge\tfrac12\log n$; by
+Lemma~\ref{lem:omega},
+\begin{equation}\label{eq:omegabound}
+\tilde\omega\;\le\;1.28\,\frac{L}{\log L}+1429
+\;\le\;\frac{2.56}{C^*}\cdot\frac{n}{\log n}+1429 .
+\end{equation}
+(For $L<e$ we have $m\le 15$, so $\omega(m)\le2$ and \eqref{eq:omegabound} is
+trivial; for $e\le L\le\sqrt n$, monotonicity of $t/\log t$ on $[e,\infty)$
+bounds the first term by $2.56\sqrt n/\log n$, which is even smaller. Thus
+\eqref{eq:omegabound} holds in all cases for $n\ge (C^*)^2$.)
+
+\emph{Bad set 1: $\tilde q\mid s$.} At most $\tilde\omega$ elements of $W$.
+
+\emph{Bad set 2: primes $\tilde q$ for which many representations meet $rs$.}
+For $\tilde q\in W$ put $M=2\tilde q-1\in(n/2,\,n]$, an odd number (the range by
+the choice of $W$). Let $\mathrm{Bad}(M)$ be the number of
+ordered representations $M=q_1+q_2+q_3$ in primes with some $q_i\mid rs$. Then
+\[
+\mathrm{Bad}(M)\;\le\;3\sum_{\substack{p\mid rs\\ p\le M}} r_2(M-p).
+\]
+The term $p=2$ contributes $r_2$ of an odd number, at most $2$, so at most $6$ per
+$\tilde q$. For odd $p$ the argument $k=M-p$ is even; when $k<\sqrt n$ we use
+$r_2(k)\le k\le\sqrt n$, and when $k\ge\sqrt n$ Theorem~\ref{thm:sieve} with
+$k\le n$ and $\log^2k\ge\tfrac14\log^2n$ gives $r_2(k)\le 4C_2\,S(k)\,n/\log^2n$.
+Summing over $\tilde q\in W$ and using Lemma~\ref{lem:avg} for each fixed $p$
+(with $b=1+p$):
+\[
+\sum_{\tilde q\in W}\mathrm{Bad}(2\tilde q-1)
+\;\le\;6|W|\;+\;3\,\tilde\omega\,\Bigl(\tfrac{\sqrt n}2+1\Bigr)\sqrt n
+\;+\;12\,C_2\,\frac{n}{\log^2 n}\cdot \tilde\omega\cdot C_3\frac{n}{\log n} .
+\]
+By Theorem~\ref{thm:vino}, for $n$ large every odd $M\in(n/2,n]$ has
+\[
+r_3(M)\;\ge\;c_1M^2/\log^3M\;\ge\;\tfrac{c_1}4\,n^2/\log^3 n\;=:\;T .
+\]
+Let
+$E=\{\tilde q\in W:\ \mathrm{Bad}(2\tilde q-1)\ge\tfrac12 r_3(2\tilde q-1)\}$;
+then $|E|\le 2T^{-1}\sum_{\tilde q}\mathrm{Bad}$, i.e.
+\[
+|E|\;\le\;\frac{8\log^3n}{c_1n^2}\Bigl[6|W|+2\tilde\omega n
++12\,C_2C_3\,\tilde\omega\,\frac{n^2}{\log^3 n}\Bigr]
+\;=\;\frac{96\,C_2C_3}{c_1}\,\tilde\omega\;+\;o\Bigl(\frac n{\log n}\Bigr),
+\]
+the secondary terms being $O(|W|\log^3 n/n^2)+O(\tilde\omega\log^3n/n)
+=O(\log^2 n)$. By \eqref{eq:omegabound},
+\[
+\frac{96\,C_2C_3}{c_1}\,\tilde\omega
+\;\le\;\frac{246\,C_2C_3}{c_1\,C^*}\cdot\frac n{\log n}
+\;+\;\frac{96\cdot 1429\,C_2C_3}{c_1}.
+\]
+Now choose $C^*=\max\{100,\ 4920\,C_2C_3/c_1\}$, so the first term is at most
+$0.05\,n/\log n$, and let $N^*$ be large enough that: $n\ge\max\{10^8,(C^*)^2\}$;
+$2\tilde q-1\ge M_0$ for all $\tilde q\in W$; the constant $1429$ of
+\eqref{eq:omegabound} is at most $0.004\,n/\log n$, so that
+$\tilde\omega\le0.03\,n/\log n$; and each of the three remaining terms in the
+bound for $|E|$ --- the constant $96\cdot1429\,C_2C_3/c_1$ and the two secondary
+terms --- is at most $0.01\,n/\log n$. Then, using Lemma~\ref{lem:Wsize},
+\[
+\#\{\text{good }\tilde q\}\;\ge\;|W|-\tilde\omega-|E|
+\;\ge\;\Bigl(0.15-0.03-0.05-0.04\Bigr)\frac n{\log n}\;>\;0
+\]
+(the $0.03$ covering Bad set~1, the $0.05$ the main term of $|E|$, and the
+$0.04$ its three remaining terms).
+Any $\tilde q\in W$ outside both bad sets satisfies (G1), and (G2) because
+$r_3(2\tilde q-1)-\mathrm{Bad}(2\tilde q-1)\ge\tfrac12r_3(2\tilde q-1)>0$: some
+representation avoids the primes of $rs$ entirely.
+\end{proof}
+
+\begin{remark}\label{rem:avg}
+The averaging over $\tilde q$ is not cosmetic. For a single fixed $M$ the
+worst-case bound $S(M-p)\ll\log\log n$, multiplied by up to $L/\log 2\asymp n/C$
+possible $p$, exceeds $r_3(M)$ by a factor $\asymp\log n\log\log n/C$ --- and
+even the sharpened count of Lemma~\ref{lem:omega} (attained when $rs$ is a
+primorial) leaves a factor $\asymp\log\log n/C$: no fixed choice of $M$ can be
+proved to work by these estimates alone. Averaging restores the loss
+because, as $\tilde q$ varies over a full window of primes, the singular series
+$S(2\tilde q-1-p)$ is bounded on average (Lemma~\ref{lem:avg}); and the sharpened
+count $\tilde\omega\ll L/\log L$ of Lemma~\ref{lem:omega} --- distinct prime
+divisors cannot all be small --- supplies exactly the factor $\log n$ that the
+trivial bound $\tilde\omega\le L/\log 2$ would lose. As stressed in the
+introduction, the quantifier order is what makes the averaging legitimate: $r$
+and $s$ are given before $\tilde q$ is chosen.
+\end{remark}
+
+\section{Proof of the Main Theorem}\label{sec:proof}
+
+\begin{proof}[Proof of the Main Theorem]
+Let $C=\max\{4.65,\ C^*\}$ and $N_0=\max\{381700,\ N^*\}$ (the maxima record what
+the effective cases alone require) with $C^*,N^*$ as in
+Proposition~\ref{prop:good}, and suppose $n\ge\max\{N_0,\,C\log m\}$. By the
+reductions of \S\ref{sec:red} we may assume \eqref{eq:standing}; the targets
+$z=1$ and $z$ a transposition are done there. Let $z\in S_n$ be any other target.
+
+If $z$ is even, Proposition~\ref{prop:even} applies. If $z$ is odd, then
+$\delta(z)$ is odd; since $z$ is not a transposition, $\delta(z)\ge3$
+(Lemma~\ref{lem:elem}(3)). If $\md(z)\ge n/2$, Proposition~\ref{prop:dense}
+applies. Otherwise $\md(z)<n/2$, and Proposition~\ref{prop:good} together with
+Lemma~\ref{lem:construction} applies. In every case $z=x^ry^s$ for some
+$x,y\in S_n$.
+\end{proof}
+
+\section{Optimality of the logarithmic shape}\label{sec:lower}
+
+Brenner, Evans and Silberger showed that on $A_n$ the constant of their theorem
+cannot be taken to be $1$: for $r=s=n!$ every value of $x^ry^s$ on $A_n$ is
+trivial, while $\theta(n)=\log m<n$ for infinitely many $n$ \cite[proof of
+Theorem~3$'$]{BES}. Both exponents there are even, so this says nothing about
+the symmetric-group problem, in which one exponent must stay odd. The following
+variant respects the parity hypothesis.
+
+\begin{proposition}\label{prop:lower}
+Let $n\ge3$, let $r=\operatorname{lcm}(1,2,\dots,n)$ and let $s$ be the odd part
+of $r$. Then $r$ is even, $s$ is odd, $\log m(r,s)=\theta(n)$, and every value
+of $x^ry^s$ on $S_n$ has all cycle lengths powers of $2$. In particular no
+$3$-cycle is a value, and $x^ry^s$ is not universal on $S_n$.
+\end{proposition}
+
+\begin{proof}
+Every cycle length $\ell\le n$ divides $r$, so by the power-of-a-cycle fact
+quoted before Lemma~\ref{lem:root} every cycle of every $x\in S_n$ collapses to
+fixed points: $x^r=1$ identically, and the values of the word are exactly the
+$s$-th powers. Write a cycle length of $y$ as $\ell=2^ab$ with $b$ odd. Then
+$b\le n$ gives $b\mid r$, and $b$ odd gives $b\mid s$ ($s$ is the odd part of
+$r$), while $s$ odd gives $\gcd(\ell,s)=b$; so, by the
+same fact, the cycle contributes $b$ cycles of length $2^a$ to $y^s$. Thus
+every cycle length of $y^s$ is a power of $2$, and a $3$-cycle ($n\ge3$) is not
+an $s$-th power. Finally, the primes dividing $rs$ are exactly the primes up to
+$n$, so $\log m(r,s)=\theta(n)$.
+\end{proof}
+
+\begin{corollary}\label{cor:lower}
+There is no $N_0$ such that, for all nonzero integers $r,s$ with at least one
+odd, the word $x^ry^s$ is universal on $S_n$ whenever
+$n\ge\max\{N_0,\,\log m(r,s)\}$. Thus the constant $C$ of the Main Theorem
+cannot be taken to be $1$ (nor, a fortiori, smaller), and the logarithmic shape
+is optimal for $S_n$ just as for $A_n$.
+\end{corollary}
+
+\begin{proof}
+There are infinitely many integers $n$ with $\theta(n)<n$ (see \cite[p.~67]{RS},
+as used in the proof of \cite[Theorem~3$'$]{BES}). Given a candidate $N_0$, pick
+such an $n\ge\max\{N_0,3\}$ and take $r,s$ as in
+Proposition~\ref{prop:lower}: then $n\ge\max\{N_0,\log m(r,s)\}$, yet $x^ry^s$
+is not universal on $S_n$.
+\end{proof}
+
+\section{Concluding remarks}\label{sec:remarks}
+
+The two 1986 \emph{Proceedings} papers and Merzlyakov's problem set a precise
+program: a degree bound for $x^ry^s$ logarithmic in $m(r,s)$, uniform in the
+word, on each of $A_n$ and $S_n$, together with the matching lower bound. With
+the Main Theorem and \S\ref{sec:lower}, both halves of the symmetric-group case
+are now closed, forty years after the problem was posed.
+
+Beyond the statement, we would single out the diagnosis of
+\S\ref{ssec:obstruction} as a contribution in its own right:
+Proposition~\ref{prop:obstruction} locates the difficulty of Problem~10.32 on
+the divide between binary and ternary additive prime problems --- two cycle
+lengths force a twin-prime-type constellation, out of reach, while a factor
+shape with three prime summands moves the problem to ternary Goldbach, where
+Vinogradov's theorem applies. The analytic devices themselves are classical ---
+the three-primes lower bound, an upper-bound sieve, the averaging of singular
+series over a window --- and we claim no novelty for any of them individually.
+What may transfer is the arrangement: a three-primes theorem relative to an
+excluded set of primes that is fixed before the window is chosen, with the
+adversary defeated on average rather than pointwise, and the count
+$\omega(m)\ll\log m/\log\log m$ closing the final factor. That pattern ---
+choose the factor shape to fit the arithmetic, then let an exact factorization
+criterion certify it --- may be useful, as may the dyadic windows of
+\S\ref{sec:dense}, in other covering problems in symmetric groups where
+prescribed prime-avoidance is the obstacle.
+
+
+\begin{remark}[Shapes of the factors]
+The proof gives more than universality: every $z\in S_n$ is expressed with factors
+of an explicit and very restricted shape --- two prime-length cycles for even $z$;
+an odd-prime cycle times a $(2^a\cdot\text{prime})$-cycle for odd $z$ of large
+support; and a type-$(q_1,q_2,q_3,1)$ permutation times a full even cycle on an
+$N$-point subset for odd $z$ of small support. The analysis in
+\S\ref{sec:intro} explains why some change of shape in the last case is not an
+artifact of the method: for odd targets with bounded $\delta(z)$ and adversarial
+$r,s$, the Herzog--Kaplan--Lev constraints force the two cycle lengths within
+bounded distance of each other while avoiding prescribed primes --- twin-prime
+territory (Proposition~\ref{prop:obstruction}). It is the passage from two
+factors' worth of freedom to
+three summands' worth --- from binary to ternary Goldbach --- that makes the
+small-support case provable.
+\end{remark}
+
+\begin{remark}[Effectivity]\label{rem:effective}
+The constant $C$ is an explicit number once the sieve constant $C_2$ and
+Vinogradov constant $c_1$ are fixed from the cited sources; no attempt has been
+made to optimize it. The threshold $N_0$ is ineffective solely through $M_0$ of
+Theorem~\ref{thm:vino}. Replacing Theorem~\ref{thm:vino} by the explicit
+three-primes estimates underlying Helfgott's proof \cite{Helfgott} would, at the
+cost of numerical work orthogonal to the ideas here, render $N_0$ effective as
+well. By contrast, targets that are even or move at least $n/2$ points need only
+Propositions~\ref{prop:even} and \ref{prop:dense}: for these,
+$n\ge\max\{381700,\,4.65\log m\}$ suffices, fully explicitly.
+\end{remark}
+
+\begin{remark}[Constants]
+The case constants $4.5$ and $4.65$ come from windows of relative width
+$\asymp1/4$, which is the natural floor of the present placement: sharper
+Chebyshev bounds (Dusart's, for instance) push both constants toward $4$, but
+not below it, without a structural change. Brenner, Evans and Silberger
+\cite{BES} obtain every $c>8/5$ for $A_n$ by a finer argument in which whole
+ranges of primes dividing $m$ are played against each other, and
+\S\ref{sec:lower} shows $c>1$ is required for $S_n$ as well. Locating the
+optimal constant --- for the effective cases somewhere in $(1,\,4.65]$, and for
+the theorem as a whole tied to the Vinogradov bookkeeping of \S\ref{sec:sparse}
+--- remains open, as does an $S_n$ analogue of the sharp $8/5$ threshold of
+\cite{BES}.
+\end{remark}
+
+\begin{remark}[Verification]\label{rem:verification}
+Beyond Remark~\ref{rem:machine}, two computations were run against this paper's
+own argument, chiefly to guard against misquotation of the imported criteria and
+against slips in composition-order conventions: the condition chains fed to
+Theorems~\ref{thm:HKL} and \ref{thm:Boccara} in \S\S4--6 were checked on $600$
+random instances $(n,r,s,z)$ with $n\le3000$, and the small-support construction
+of Lemma~\ref{lem:construction} was executed end to end in $S_{14}$--$S_{16}$ on
+$400$ random targets, the identity $x^ry^s=z$ holding exactly in every instance.
+The lower-bound construction of \S\ref{sec:lower} was likewise verified
+exhaustively for $n\le7$. The scripts, including a rigorous certification of the
+numerical constants of Lemma~\ref{lem:avg}, are available at
+\url{https://github.com/AviKndr/universal-words} (\texttt{validate.py}).
+\end{remark}
+
+\section*{Acknowledgements}
+This paper was researched and written with substantial assistance from Claude
+(Anthropic), which was used for literature retrieval, for the design and checking
+of the argument, and for drafting. The two factorization criteria and the
+constructions of \S\S4--6 were additionally checked by machine computation as
+indicated in Remarks~\ref{rem:machine} and \ref{rem:verification}. Errors are the
+author's. The statement of Problem~10.32 is quoted from the Kourovka Notebook
+\cite{KN}.
+
+\begin{thebibliography}{99}
+
+\bibitem{Bertram} E.~Bertram, \emph{Even permutations as a product of two
+conjugate cycles}, J. Combin. Theory Ser.~A \textbf{12} (1972), 368--380.
+
+\bibitem{Boccara80} G.~Boccara, \emph{Nombre de repr\'esentations d'une
+permutation comme produit de deux cycles de longueurs donn\'ees}, Discrete Math.
+\textbf{29} (1980), 105--134.
+
+\bibitem{Boccara82} G.~Boccara, \emph{Cycles comme produit de deux permutations
+de classes donn\'ees}, Discrete Math. \textbf{38} (1982), 129--142.
+
+\bibitem{BES} J.~L.~Brenner, R.~J.~Evans and D.~M.~Silberger, \emph{The
+universality of words $x^ry^s$ in alternating groups}, Proc. Amer. Math. Soc.
+\textbf{96} (1986), no.~1, 23--28.
+
+\bibitem{Droste} M.~Droste, \emph{On the universality of words for the
+alternating groups}, Proc. Amer. Math. Soc. \textbf{96} (1986), no.~1, 18--22.
+
+\bibitem{EKS} A.~L.~Edmonds, R.~S.~Kulkarni and R.~E.~Stong, \emph{Realizability
+of branched coverings of surfaces}, Trans. Amer. Math. Soc. \textbf{282} (1984),
+773--790.
+
+\bibitem{HR} H.~Halberstam and H.-E.~Richert, \emph{Sieve Methods}, Academic
+Press, 1974.
+
+\bibitem{Helfgott} H.~A.~Helfgott, \emph{The ternary Goldbach conjecture is
+true}, arXiv:1312.7748 (2013); expanded as \emph{The ternary Goldbach problem},
+arXiv:1501.05438.
+
+\bibitem{HKL} M.~Herzog, G.~Kaplan and A.~Lev, \emph{Representation of
+permutations as products of two cycles}, Discrete Math. \textbf{285} (2004),
+323--327.
+
+\bibitem{KN} \emph{Unsolved problems in group theory. The Kourovka Notebook},
+21st ed., E.~I.~Khukhro and V.~D.~Mazurov (eds.), Sobolev Institute of
+Mathematics, Novosibirsk, 2026; arXiv:1401.0300. Problem~10.32.
+
+\bibitem{LaSh} M.~Larsen and A.~Shalev, \emph{Word maps and Waring type
+problems}, J. Amer. Math. Soc. \textbf{22} (2009), 437--466.
+
+\bibitem{LST} M.~Larsen, A.~Shalev and P.~H.~Tiep, \emph{The Waring problem
+for finite simple groups}, Ann. of Math. (2) \textbf{174} (2011), no.~3,
+1885--1950.
+
+\bibitem{LOST} M.~W.~Liebeck, E.~A.~O'Brien, A.~Shalev and P.~H.~Tiep,
+\emph{The Ore conjecture}, J. Eur. Math. Soc. \textbf{12} (2010), no.~4,
+939--1008.
+
+\bibitem{MV} H.~L.~Montgomery and R.~C.~Vaughan, \emph{The large sieve},
+Mathematika \textbf{20} (1973), 119--134.
+
+\bibitem{Petronio} C.~Petronio, \emph{The Hurwitz existence problem for surface
+branched covers}, Winter Braids Lect. Notes \textbf{7} (2020), Course~II, 1--43.
+
+\bibitem{RS} J.~B.~Rosser and L.~Schoenfeld, \emph{Approximate formulas for some
+functions of prime numbers}, Illinois J. Math. \textbf{6} (1962), 64--94.
+
+\bibitem{RS75} J.~B.~Rosser and L.~Schoenfeld, \emph{Sharper bounds for the
+Chebyshev functions $\theta(x)$ and $\psi(x)$}, Math. Comp. \textbf{29} (1975),
+243--269.
+
+\bibitem{Thom} R.~Thom, \emph{L'\'equivalence d'une fonction diff\'erentiable et
+d'un polyn\^ome}, Topology \textbf{3} (1965), suppl.~2, 297--307.
+
+\bibitem{Vaughan} R.~C.~Vaughan, \emph{The Hardy--Littlewood Method}, 2nd ed.,
+Cambridge Tracts in Math. \textbf{125}, Cambridge Univ. Press, 1997.
+
+\bibitem{Vino} I.~M.~Vinogradov, \emph{Representation of an odd number as a sum
+of three primes}, C. R. (Dokl.) Acad. Sci. URSS \textbf{15} (1937), 169--172.
+
+\bibitem{Wilf} H.~S.~Wilf, \emph{generatingfunctionology}, 2nd ed., Academic
+Press, 1994.
+
+\end{thebibliography}
+
+\end{document}
