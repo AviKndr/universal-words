@@ -1,0 +1,310 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Universality of the words x^r y^s in symmetric groups (Kourovka 10.32)"
+  description: >-
+    Answer to Problem 10.32 of the Kourovka Notebook (posed by Yu. I.
+    Merzlyakov, 1986), in both directions. Positive direction: there are
+    effective constants C and N0 such that for all nonzero integers r, s with
+    r or s odd, the word x^r y^s is universal on the symmetric group S_n
+    (every permutation is a value) whenever n >= N0 and n >= C * log m(r,s),
+    where m(r,s) is the product of the distinct primes dividing rs. This is
+    the S_n analogue, logarithmic in m, of the Brenner-Evans-Silberger bound
+    for A_n, replacing the previously known linear bound (Droste). Negative
+    direction, unconditionally: the logarithmic shape is optimal - with
+    r = lcm(1..n) and s its odd part, no element of order 3 in S_n is a value
+    of x^r y^s, while log m(r,s) equals the Chebyshev function theta(n). The
+    Lean development formalizes the entire proof of the accompanying paper
+    (also in this repository) on top of Mathlib. Its principal theorem,
+    UniversalWords.kourovka_10_32_conditional, is a fully proved implication
+    from eight explicitly stated published theorems (Herzog-Kaplan-Lev,
+    Boccara, three Rosser-Schoenfeld bounds, Montgomery-Vaughan's
+    Brun-Titchmarsh inequality, Vinogradov's three-primes theorem, and the
+    Halberstam-Richert sieve bound) and depends only on Lean's three standard
+    axioms, as does the optimality theorem UniversalWords.not_universal. A
+    quarantined module assumes the eight statements as axioms to derive the
+    unconditional form.
+  authors:
+    - Avi Kondareddy
+  responsible_maintainers:
+    - Avi Kondareddy
+  license: "MIT"
+
+sources:
+  - title: >-
+      The universality of the words x^r y^s in symmetric groups: a
+      logarithmic bound answering Kourovka Notebook Problem 10.32
+    authors:
+      - Avi Kondareddy
+    type: "original-proof"
+    location: "universal-words.tex / universal-words.pdf at the repository root"
+    relationship: "other"
+    note: >-
+      This formalization is the first presentation of the result; the proof
+      it formalizes is the accompanying paper in this repository, written as
+      part of the same project. The paper has not (yet) been published or
+      posted elsewhere.
+  - title: "Unsolved problems in group theory. The Kourovka Notebook, Problem 10.32"
+    contributors:
+      - name: "Yu. I. Merzlyakov"
+        role: "problem-proposer"
+      - name: "E. I. Khukhro"
+        role: "editor"
+      - name: "V. D. Mazurov"
+        role: "editor"
+    id: "arXiv:1401.0300"
+    type: "other"
+    location: "Problem 10.32 (tenth issue, 1986)"
+    relationship: "background"
+    note: "The open problem the formalized result answers."
+  - title: "Bounds for the anticenter of a group (universality of x^r y^s on alternating groups)"
+    authors: ["J. L. Brenner", "R. J. Evans", "D. M. Silberger"]
+    id: "Proc. Amer. Math. Soc. 96 (1986), no. 1, 23-28"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      The A_n result whose S_n analogue Problem 10.32 requests; quoted in the
+      problem statement. Not used in the proof.
+  - title: "On a question of C. L. Silberger (universality bound n >= max{6, 4m-4} for S_n)"
+    authors: ["M. Droste"]
+    id: "Proc. Amer. Math. Soc. 96 (1986), no. 1, 18-22"
+    type: "paper"
+    relationship: "background"
+    note: "The previously known linear-in-m bound for S_n. Not used in the proof."
+  - title: "Representation of permutations as products of two cycles"
+    authors: ["M. Herzog", "G. Kaplan", "A. Lev"]
+    id: "Discrete Math. 285 (2004), 323-327"
+    type: "paper"
+    location: "Theorem 7 (sufficiency)"
+    relationship: "background"
+    note: "Stated as HKLStatement; hypothesis of the conditional theorem."
+  - title: "Cycles comme produit de deux permutations de classes donnees"
+    authors: ["G. Boccara"]
+    id: "Discrete Math. 38 (1982), 129-142"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Stated (specialised to cycle type (q1,q2,q3,1) against a full cycle) as
+      BoccaraStatement; hypothesis of the conditional theorem.
+  - title: "Approximate formulas for some functions of prime numbers"
+    authors: ["J. B. Rosser", "L. Schoenfeld"]
+    id: "Illinois J. Math. 6 (1962), 64-94"
+    type: "paper"
+    location: "Theorem 9, eqs. (3.5) and (3.6)"
+    relationship: "background"
+    note: >-
+      Stated as PiUpperStatement, PiLowerStatement and (combined with the
+      1975 sharper bounds) RSWindowMassStatement; hypotheses of the
+      conditional theorem.
+  - title: "Sharper bounds for the Chebyshev functions theta(x) and psi(x)"
+    authors: ["J. B. Rosser", "L. Schoenfeld"]
+    id: "Math. Comp. 29 (1975), 243-269"
+    type: "paper"
+    location: "Corollary to Theorem 6"
+    relationship: "background"
+    note: "The theta(x) > 0.985x half of RSWindowMassStatement."
+  - title: "The large sieve"
+    authors: ["H. L. Montgomery", "R. C. Vaughan"]
+    id: "Mathematika 20 (1973), 119-134"
+    type: "paper"
+    location: "Theorem 2 (Brun-Titchmarsh)"
+    relationship: "background"
+    note: "Stated as BrunTitchmarshStatement; hypothesis of the conditional theorem."
+  - title: "Representation of an odd number as a sum of three primes"
+    authors: ["I. M. Vinogradov"]
+    id: "C. R. (Dokl.) Acad. Sci. URSS 15 (1937), 169-172"
+    type: "paper"
+    relationship: "background"
+    note: >-
+      Stated in count form (see R. C. Vaughan, The Hardy-Littlewood Method,
+      2nd ed., Theorem 3.4) as VinogradovStatement; hypothesis of the
+      conditional theorem. The threshold M0 is ineffective.
+  - title: "Sieve Methods"
+    authors: ["H. Halberstam", "H.-E. Richert"]
+    id: "Academic Press, 1974. ISBN 0-12-318250-6"
+    type: "book"
+    location: "Theorem 3.11"
+    relationship: "background"
+    note: "Stated as SieveR2Statement; hypothesis of the conditional theorem."
+
+classification:
+  arxiv: ["math.GR", "math.NT"]
+  msc2020: ["20B30", "20D60", "11P32", "05A05"]
+
+status:
+  scope: >-
+    Whole-paper formalization: every proposition, lemma and theorem of the
+    paper's proof (sections 2-8) is formalized and proved, with the eight
+    classical inputs stated as named propositions and taken as hypotheses.
+    The only deliberately unformalized step is Corollary 8.2's classical
+    fact that theta(n) < n for infinitely many n, so the optimality
+    *interpretation* (constant 1 unattainable) rests on that unformalized
+    classical fact, while the construction itself (not_universal, L_eq_theta)
+    is fully machine-checked.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+    - "UniversalWords.rs_window_mass (Unconditional.lean only)"
+    - "UniversalWords.hkl (Unconditional.lean only)"
+    - "UniversalWords.boccara_three (Unconditional.lean only)"
+    - "UniversalWords.pi_upper (Unconditional.lean only)"
+    - "UniversalWords.pi_lower (Unconditional.lean only)"
+    - "UniversalWords.brun_titchmarsh (Unconditional.lean only)"
+    - "UniversalWords.vinogradov (Unconditional.lean only)"
+    - "UniversalWords.sieve_r2 (Unconditional.lean only)"
+  main_results:
+    - declaration: "UniversalWords.kourovka_10_32_conditional"
+      file: "UniversalWords/Main.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies:
+        - statement: "RSWindowMassStatement (hypothesis of the implication)"
+          source: "Rosser-Schoenfeld 1962, Theorem 9; Rosser-Schoenfeld 1975, Corollary to Theorem 6"
+        - statement: "HKLStatement (hypothesis of the implication)"
+          source: "Herzog-Kaplan-Lev 2004, Theorem 7"
+        - statement: "BoccaraStatement (hypothesis of the implication)"
+          source: "Boccara 1982"
+        - statement: "PiUpperStatement, PiLowerStatement (hypotheses of the implication)"
+          source: "Rosser-Schoenfeld 1962, eqs. (3.6), (3.5)"
+        - statement: "BrunTitchmarshStatement (hypothesis of the implication)"
+          source: "Montgomery-Vaughan 1973, Theorem 2"
+        - statement: "VinogradovStatement (hypothesis of the implication)"
+          source: "Vinogradov 1937; Vaughan, The Hardy-Littlewood Method, 2nd ed., Theorem 3.4"
+        - statement: "SieveR2Statement (hypothesis of the implication)"
+          source: "Halberstam-Richert 1974, Theorem 3.11"
+    - declaration: "UniversalWords.not_universal"
+      file: "UniversalWords/LowerBound.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+    - declaration: "UniversalWords.kourovka_10_32"
+      file: "UniversalWords/Unconditional.lean"
+      sorry_count: 0
+      axioms:
+        - "propext"
+        - "Classical.choice"
+        - "Quot.sound"
+        - "UniversalWords.rs_window_mass"
+        - "UniversalWords.hkl"
+        - "UniversalWords.boccara_three"
+        - "UniversalWords.pi_upper"
+        - "UniversalWords.pi_lower"
+        - "UniversalWords.brun_titchmarsh"
+        - "UniversalWords.vinogradov"
+        - "UniversalWords.sieve_r2"
+      literature_dependencies:
+        - statement: "The eight classical statements above, assumed as axioms"
+          source: "See the source entries for each; documented on each axiom in UniversalWords/Unconditional.lean"
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["claude-fable-5", "claude-opus-5"]
+      framework: "Claude Code"
+      tool_setup: >-
+        Interactive agentic sessions in the Claude Code CLI. Lean 4 with
+        Mathlib (pinned via lake-manifest.json); iteration through an
+        incremental file checker and full `lake build`; axiom auditing via
+        `#print axioms` commands committed in UniversalWords.lean.
+      prompting_notes: >-
+        Goal-directed prompting by the author: the agent produced the
+        mathematical proof (the accompanying paper) and its Lean
+        formalization, ran adversarial referee rounds on the paper, and
+        restructured the development so the main theorem is a fully proved
+        implication; the author set goals, made acceptance decisions, and
+        reviewed outcomes.
+  notes: >-
+    Both the mathematics (the proof presented in the accompanying paper) and
+    the Lean formalization were produced by the agent under the author's
+    direction. No claim in this file has been verified by an independent
+    human mathematician.
+
+fidelity:
+  divergences: >-
+    The eight classical inputs are stated in the specialised forms the proof
+    uses rather than full generality: Rosser-Schoenfeld as a single window-
+    mass bound and two pi(x) bounds; Boccara specialised to cycle type
+    (q1,q2,q3,1) against a full cycle; Vinogradov in count form with an
+    ineffective threshold; Halberstam-Richert with the constant absorbing
+    the twin-prime constant. The formal constants (C, N0) are constructed
+    from the hypotheses' existential constants rather than being the paper's
+    numerically optimised C = 4.65, so the formal theorem asserts existence
+    of effective constants rather than that particular value. Corollary 8.2's
+    appeal to theta(n) < n infinitely often is not formalized.
+
+review:
+  status: "agent-reviewed"
+  reviewers:
+    - "Claude (adversarial referee rounds by the same agent family that produced the work)"
+  notes: >-
+    The paper underwent six adversarial referee rounds plus a communication
+    audit, all performed by the producing agent (not independent). The Lean
+    development is checked by `lake build` at the pinned toolchain and
+    Mathlib revision; the axiom audit in UniversalWords.lean certifies the
+    dependency sets stated above. No independent human peer review has taken
+    place.
+
+alignment:
+  namespace: "UniversalWords"
+  statements:
+    - source: "Lemma 2.1 (parity and cycle bookkeeping)"
+      lean: "UniversalWords.sign_eq_neg_one_pow_delta, UniversalWords.md_le_two_mul_delta"
+      module: "UniversalWords/Basic.lean"
+      status: "proved"
+    - source: "Lemma 2.2 (root lemma)"
+      lean: "UniversalWords.exists_zpow_eq_of_coprime, UniversalWords.word_of_factorization"
+      module: "UniversalWords/Basic.lean"
+      status: "proved"
+    - source: "Lemma 2.3 (prime windows avoiding rs)"
+      lean: "UniversalWords.exists_prime_window_coprime"
+      module: "UniversalWords/Windows.lean"
+      status: "proved"
+    - source: "Proposition 4.1 (even targets)"
+      lean: "UniversalWords.even_case"
+      module: "UniversalWords/Cases.lean"
+      status: "proved"
+    - source: "Proposition 5.1 (odd targets of dense support)"
+      lean: "UniversalWords.dense_case"
+      module: "UniversalWords/Dense.lean"
+      status: "proved"
+    - source: "Lemma 6.2 (odd targets of sparse support)"
+      lean: "UniversalWords.sparse_case"
+      module: "UniversalWords/Cases.lean"
+      status: "proved"
+    - source: "Lemma 6.4 (singular-series average)"
+      lean: "UniversalWords.averaging"
+      module: "UniversalWords/Averaging.lean"
+      status: "proved"
+    - source: "Proposition 6.5 (existence of a good prime)"
+      lean: "UniversalWords.exists_good_prime"
+      module: "UniversalWords/GoodPrime.lean"
+      status: "proved"
+    - source: "Main Theorem (sections 3 and 7)"
+      lean: "UniversalWords.kourovka_10_32_conditional"
+      module: "UniversalWords/Main.lean"
+      status: "proved"
+      note: "As a fully proved implication from the eight classical statements."
+    - source: "Main Theorem, unconditional form"
+      lean: "UniversalWords.kourovka_10_32"
+      module: "UniversalWords/Unconditional.lean"
+      status: "literature-dependency"
+      note: "The conditional theorem applied to the eight statements assumed as axioms."
+    - source: "Proposition 8.1 (optimality construction)"
+      lean: "UniversalWords.not_universal, UniversalWords.L_eq_theta"
+      module: "UniversalWords/LowerBound.lean"
+      status: "proved"
+    - source: "Corollary 8.2 (constant 1 unattainable)"
+      lean: ""
+      module: ""
+      status: "not-formalized"
+      note: "Uses theta(n) < n infinitely often, which is not formalized."
+
+acknowledgements: >-
+  Built on Mathlib (the Lean mathematical library). The Challenge/Solution
+  comparison surface follows the leanprover/comparator conventions.

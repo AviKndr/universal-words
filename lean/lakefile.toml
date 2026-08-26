@@ -1,6 +1,6 @@
 name = "universalwords"
 version = "0.1.0"
-defaultTargets = ["UniversalWords"]
+defaultTargets = ["UniversalWords", "Challenge", "Solution"]
 
 [leanOptions]
 pp.unicode.fun = true
@@ -14,3 +14,12 @@ rev = "ae26804842dd341fb1c52e81d71f1a105ef4ca34"
 
 [[lean_lib]]
 name = "UniversalWords"
+
+# The Palomar comparison surface: the Challenge states the two principal
+# theorems from Mathlib alone (with holes); the Solution proves them from
+# the UniversalWords development.
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"

@@ -70,6 +70,26 @@ its construction (Proposition 8.1) is fully verified — is not machine-checked.
 
 There are no `sorry`s.
 
+## The comparison surface (Challenge / Solution)
+
+For mechanical comparison (following the
+[leanprover/comparator](https://github.com/leanprover/comparator) conventions),
+the two principal theorems are restated in a small self-contained audit file:
+
+- `Challenge.lean` — imports Mathlib only; defines the notions used
+  (`md`, `cy`, `delta`, `m(r,s)`, `L`, prime windows, `r₂`, `r₃`, the singular
+  series), states the eight classical inputs verbatim, and states the two
+  compared theorems with deliberate holes:
+  `Kourovka1032.kourovka_10_32_conditional` and `Kourovka1032.not_universal`.
+- `Solution.lean` — redeclares the same environment and proves both theorems
+  by instantiating this development; both proofs depend only on
+  `[propext, Classical.choice, Quot.sound]`.
+- `comparator.json` — names the two modules, the two compared theorems, and
+  the permitted (standard) axioms.
+- `formalization.yaml` — structured metadata: provenance, sources,
+  classification, automation disclosure, fidelity notes, and the
+  paper-to-Lean alignment table.
+
 ## A note on the local check script
 
 `check.sh` type-checks the modules incrementally against an already-built Mathlib

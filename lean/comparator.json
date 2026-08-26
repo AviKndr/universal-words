@@ -1,0 +1,9 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "Kourovka1032.kourovka_10_32_conditional",
+    "Kourovka1032.not_universal"
+  ],
+  "permitted_axioms": ["propext", "Quot.sound", "Classical.choice"]
+}

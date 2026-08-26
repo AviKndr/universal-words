@@ -105,6 +105,12 @@ infinitely often (a deep oscillation theorem), so the *optimality* conclusion �
 though its construction is verified — is not machine-checked. See
 `lean/README.md` for the exact axiom listing.
 
+The two principal theorems are additionally restated in a self-contained,
+Mathlib-only audit file `lean/Challenge.lean` and proved against it in
+`lean/Solution.lean` (comparator configuration in `lean/comparator.json`);
+structured metadata — provenance, classification, automation disclosure, and
+the paper-to-Lean alignment table — lives in `lean/formalization.yaml`.
+
 ## Status
 
 Preprint, **not yet refereed**. Comments and corrections are welcome via the issue tracker.
