@@ -8,6 +8,10 @@ lake exe cache get   # fetch prebuilt Mathlib oleans (do this first)
 lake build
 ```
 
+The development uses targeted Mathlib imports rather than `import Mathlib`
+(`Basic.lean` carries the shared header), which makes a warm-cache check of the
+whole chain take ~25 s rather than ~2 min.
+
 | File | Paper |
 | --- | --- |
 | `UniversalWords/Basic.lean` | §2: `md`, `cy`, `δ`; Lemma 2.1; the root lemma 2.2; the factorization core |

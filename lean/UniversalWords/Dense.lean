@@ -31,8 +31,7 @@ theorem exists_dyadic_prime (r s : ℤ) (hrs : r * s ≠ 0) (hn : 381700 ≤ n)
     ∃ a q : ℕ, 1 ≤ a ∧ a ≤ 5 ∧ q.Prime ∧ ¬ (q ∣ (r * s).natAbs) ∧
       3 * (n : ℝ) / 2 ^ (a + 2) < (q : ℝ) ∧ (q : ℝ) ≤ (n : ℝ) / 2 ^ a := by
   have hn' : (381700 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-  by_contra hcon
-  push_neg at hcon
+  by_contra! hcon
   -- the five windows
   set W₁ := primesIn (3 * (n : ℝ) / 8) ((n : ℝ) / 2) with hW₁
   set W₂ := primesIn (3 * (n : ℝ) / 16) ((n : ℝ) / 4) with hW₂

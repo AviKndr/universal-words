@@ -17,8 +17,7 @@ theorem exists_prime_window_not_dvd (a b : ℝ) (ha : 0 ≤ a) (hb : (11927 : �
     (hab : a ≤ b) (M : ℕ) (hM : M ≠ 0)
     (hmass : ∑ p ∈ M.primeFactors, Real.log p < 0.985 * b - 1.01624 * a) :
     ∃ p : ℕ, p.Prime ∧ ¬ (p ∣ M) ∧ a < (p : ℝ) ∧ (p : ℝ) ≤ b := by
-  by_contra hcon
-  push_neg at hcon
+  by_contra! hcon
   -- every prime of the window divides `M`
   have hsub : primesIn a b ⊆ M.primeFactors := by
     intro p hp

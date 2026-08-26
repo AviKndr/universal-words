@@ -11,6 +11,7 @@ the paper additionally invokes `θ(n) < n` infinitely often, an unconditional bu
 deep oscillation theorem, which is not formalised here.)
 -/
 import UniversalWords.Basic
+import Mathlib.Data.Nat.Prime.Factorial
 
 namespace UniversalWords
 
@@ -23,7 +24,7 @@ lemma R_pos (n : ℕ) : 0 < R n := by
   rw [R, Nat.pos_iff_ne_zero]
   intro h
   rw [Finset.lcm_eq_zero_iff] at h
-  simp only [Set.mem_setOf_eq, Finset.mem_coe, Finset.mem_Icc, id_eq] at h
+  simp only [Finset.mem_Icc, id_eq] at h
   obtain ⟨a, ⟨ha1, _⟩, ha0⟩ := h
   omega
 
@@ -44,6 +45,11 @@ lemma orderOf_dvd_R {n : ℕ} (x : Perm (Fin n)) : orderOf x ∣ R n := by
 /-- `x ^ lcm(1,…,n) = 1` for every `x ∈ S_n`: the first factor dies identically. -/
 lemma pow_R_eq_one {n : ℕ} (x : Perm (Fin n)) : x ^ (R n) = 1 :=
   orderOf_dvd_iff_pow_eq_one.mp (orderOf_dvd_R x)
+
+/-- For `n ≥ 2` the exponent `r = lcm(1,…,n)` is even, so the witness pair
+`(R n, s)` sits inside the parity hypothesis: `r` even, `s` odd. -/
+lemma two_dvd_R {n : ℕ} (hn : 2 ≤ n) : 2 ∣ R n :=
+  Finset.dvd_lcm (by simp only [Finset.mem_Icc]; omega)
 
 /-! ### The cost of the word: `log m(r,s) = θ(n)` -/
 
@@ -78,10 +84,8 @@ what makes the construction bite --- the word fails at degree `n` while
 theorem L_eq_theta (n s : ℕ) (hs : s ∣ R n) (hs0 : 0 < s) :
     L (R n : ℤ) (s : ℤ) = ∑ p ∈ (Finset.range (n + 1)).filter Nat.Prime, Real.log p := by
   have hRne : R n ≠ 0 := (R_pos n).ne'
-  have hprod : ((R n : ℤ) * (s : ℤ)) ≠ 0 := by
-    simp only [ne_eq, mul_eq_zero, Int.natCast_eq_zero]
-    push_neg
-    exact ⟨hRne, hs0.ne'⟩
+  have hprod : ((R n : ℤ) * (s : ℤ)) ≠ 0 :=
+    mul_ne_zero (Int.natCast_ne_zero.mpr hRne) (Int.natCast_ne_zero.mpr hs0.ne')
   rw [L_eq_sum _ _ hprod]
   congr 1
   have hnat : ((R n : ℤ) * (s : ℤ)).natAbs = R n * s := by

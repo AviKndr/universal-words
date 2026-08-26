@@ -49,7 +49,7 @@ theorem universal_of_odd_right {n : ℕ} (r s : ℤ) (hrs : r * s ≠ 0)
     by_cases hdense : n ≤ 2 * md z
     · -- Proposition 5.1
       exact dense_case r s hrs hsodd (by omega) hL465 z hodd hdense
-    · push_neg at hdense
+    · rw [not_le] at hdense
       by_cases hd1 : delta z = 1
       · -- a bare transposition: `y := z`, `x := 1`, since `s` is odd
         have hmd2 : md z ≤ 2 := by have := md_le_two_mul_delta z; omega

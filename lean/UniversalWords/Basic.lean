@@ -8,7 +8,15 @@ their difference `δ` --- and proves the two structural facts the case division
 rests on (Lemma 2.1), together with the root lemma (Lemma 2.2) in the form
 actually used: a permutation whose order is coprime to `t` is a `t`-th power.
 -/
-import Mathlib
+import Mathlib.GroupTheory.Perm.Cycle.Type
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.Data.Int.GCD
+import Mathlib.Algebra.GCDMonoid.Multiset
+import Mathlib.Algebra.GCDMonoid.Finset
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Tactic
 
 namespace UniversalWords
 
@@ -112,7 +120,7 @@ theorem exists_zpow_eq_of_coprime {G : Type*} [Group G] {σ : G} {t : ℤ}
     _ = σ := by simp
 
 /-- `lcm a b` is coprime to `t` when both `a` and `b` are. -/
-lemma Nat.Coprime.lcm' {a b t : ℕ} (ha : Nat.Coprime a t) (hb : Nat.Coprime b t) :
+lemma coprime_lcm_of_coprime {a b t : ℕ} (ha : Nat.Coprime a t) (hb : Nat.Coprime b t) :
     Nat.Coprime (Nat.lcm a b) t :=
   Nat.Coprime.coprime_dvd_left
     (Nat.lcm_dvd (dvd_mul_right a b) (dvd_mul_left b a)) (ha.mul_left hb)
@@ -126,7 +134,7 @@ lemma coprime_multiset_lcm {t : ℕ} :
   | cons a s ih =>
       intro h
       rw [Multiset.lcm_cons]
-      exact Nat.Coprime.lcm' (h a (Multiset.mem_cons_self a s))
+      exact coprime_lcm_of_coprime (h a (Multiset.mem_cons_self a s))
         (ih fun l hl => h l (Multiset.mem_cons_of_mem hl))
 
 /-- All cycle lengths coprime to `t` implies the order is coprime to `t`. -/
@@ -180,7 +188,7 @@ lemma le_of_mem_primesIn {a b : ℝ} {p : ℕ} (hb : 0 ≤ b) (h : p ∈ primesI
     _ ≤ b := Nat.floor_le hb
 
 /-- `L r s` is the total log-mass of the primes dividing `rs`. -/
-lemma L_eq_sum (r s : ℤ) (h : (r * s) ≠ 0) :
+lemma L_eq_sum (r s : ℤ) (_h : (r * s) ≠ 0) :
     L r s = ∑ p ∈ (r * s).natAbs.primeFactors, Real.log p := by
   unfold L mrs
   rw [Nat.cast_prod, Real.log_prod (fun p hp => by
