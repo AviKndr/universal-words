@@ -2,7 +2,7 @@
 version: "v0.4"
 
 project:
-  name: "Universality of the words x^r y^s in symmetric groups (Kourovka 10.32)"
+  name: "Universality of the words x^r y^s in symmetric groups (Kourovka Notebook Problem 10.32)"
   description: >-
     Answer to Problem 10.32 of the Kourovka Notebook, posed by Yu. I.
     Merzlyakov in 1986 and still open in the Notebook's 21st edition (2026),
@@ -18,10 +18,10 @@ project:
     theorem. Negative direction, unconditional: the logarithmic shape is
     optimal. For r = lcm(1..n) with s its odd part, no element of order 3 in
     S_n is a value of x^r y^s, while log m(r,s) equals theta(n), the full
-    Chebyshev mass of the primes up to n. The Lean development formalizes the
-    paper's proof (the paper is in this repository) on top of Mathlib. Its
-    principal theorem, UniversalWords.kourovka_10_32_conditional, is a fully
-    proved implication from eight explicitly stated published theorems
+    Chebyshev mass of the primes up to n. The proof is machine-checked in
+    Lean 4 on top of Mathlib, with the complete prose write-up included in
+    this repository. The principal theorem,
+    UniversalWords.kourovka_10_32_conditional, is a fully proved implication from eight explicitly stated published theorems
     (Herzog-Kaplan-Lev, Boccara, three Rosser-Schoenfeld bounds,
     Montgomery-Vaughan's Brun-Titchmarsh inequality, Vinogradov's
     three-primes theorem, and the Halberstam-Richert sieve bound) and depends
