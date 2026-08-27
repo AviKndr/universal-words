@@ -95,12 +95,15 @@ theorem L_eq_theta (n s : ℕ) (hs : s ∣ R n) (hs0 : 0 < s) :
   exact primeFactors_R n
 
 /-- **Proposition 8.1 and its corollary.**  Taking `r = lcm(1,…,n)` and `s` its odd
-part, every value of `x^r y^s` has order a power of two; in particular no element
-of order 3 is a value, so the word is not universal on `S_n`. -/
-theorem not_universal (n : ℕ) (z : Perm (Fin n)) (hz : orderOf z = 3) :
-    ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧
+part --- one witness pair per degree `n`, with `s` identified as the odd part by
+the conjunct `lcm(1,…,n) = 2^a·s` --- every value of `x^r y^s` has order a power
+of two; in particular no element of order 3 is a value, so the word is not
+universal on `S_n`. -/
+theorem not_universal (n : ℕ) :
+    ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧ (∃ a : ℕ, R n = 2 ^ a * s) ∧
       L (R n : ℤ) (s : ℤ) = ∑ p ∈ (Finset.range (n + 1)).filter Nat.Prime, Real.log p ∧
-      ∀ x y : Perm (Fin n), x ^ (R n : ℤ) * y ^ (s : ℤ) ≠ z := by
+      ∀ z : Perm (Fin n), orderOf z = 3 →
+        ∀ x y : Perm (Fin n), x ^ (R n : ℤ) * y ^ (s : ℤ) ≠ z := by
   obtain ⟨a, b, hbodd, hRab⟩ := Nat.exists_eq_two_pow_mul_odd (R_pos n).ne'
   have hb1 : b % 2 = 1 := Nat.odd_iff.mp hbodd
   have hbpos : 0 < b := by
@@ -108,8 +111,8 @@ theorem not_universal (n : ℕ) (z : Perm (Fin n)) (hz : orderOf z = 3) :
     · rw [h] at hb1; omega
     · exact h
   have hbdvd : b ∣ R n := ⟨2 ^ a, by rw [hRab]; ring⟩
-  refine ⟨b, hbpos, by omega, hbdvd, L_eq_theta n b hbdvd hbpos, ?_⟩
-  intro x y hxy
+  refine ⟨b, hbpos, by omega, hbdvd, ⟨a, hRab⟩, L_eq_theta n b hbdvd hbpos, ?_⟩
+  intro z hz x y hxy
   -- the `x`-side is trivial, so the value is `y^b`
   have h1 : x ^ (R n : ℤ) = 1 := by rw [zpow_natCast]; exact pow_R_eq_one x
   rw [h1, one_mul] at hxy

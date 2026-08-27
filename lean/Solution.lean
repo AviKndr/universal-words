@@ -105,10 +105,11 @@ theorem kourovka_10_32_conditional (hRS : RSWindowMassStatement)
         ∀ z : Perm (Fin n), ∃ x y : Perm (Fin n), x ^ r * y ^ s = z :=
   UniversalWords.kourovka_10_32_conditional hRS hHKL hBoc hPiU hPiL hBT hVino hSieve
 
-theorem not_universal (n : ℕ) (z : Perm (Fin n)) (hz : orderOf z = 3) :
-    ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧
+theorem not_universal (n : ℕ) :
+    ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧ (∃ a : ℕ, R n = 2 ^ a * s) ∧
       L (R n : ℤ) (s : ℤ) = ∑ p ∈ (Finset.range (n + 1)).filter Nat.Prime, Real.log p ∧
-      ∀ x y : Perm (Fin n), x ^ (R n : ℤ) * y ^ (s : ℤ) ≠ z :=
-  UniversalWords.not_universal n z hz
+      ∀ z : Perm (Fin n), orderOf z = 3 →
+        ∀ x y : Perm (Fin n), x ^ (R n : ℤ) * y ^ (s : ℤ) ≠ z :=
+  UniversalWords.not_universal n
 
 end Kourovka1032

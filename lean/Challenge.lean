@@ -196,17 +196,19 @@ theorem kourovka_10_32_conditional (hRS : RSWindowMassStatement)
         ∀ z : Perm (Fin n), ∃ x y : Perm (Fin n), x ^ r * y ^ s = z :=
   sorry
 
-/-- **Optimality (negative direction), unconditional.**  For every `n` and
-every `z` of order `3` in the symmetric group of `Fin n`, there is an odd
-`s ∣ lcm(1,…,n)` such that the word `x^(lcm(1,…,n)) y^s` never attains `z` —
-while its cost `log m(lcm(1,…,n), s)` equals `θ(n) = Σ_{p ≤ n} log p` exactly.
+/-- **Optimality (negative direction), unconditional.**  For every `n` there is
+a single odd exponent `s` — the odd part of `lcm(1,…,n)`, as the conjunct
+`lcm(1,…,n) = 2^a·s` records — such that the word `x^(lcm(1,…,n)) y^s` attains
+no element of order `3` in the symmetric group of `Fin n`, while its cost
+`log m(lcm(1,…,n), s)` equals `θ(n) = Σ_{p ≤ n} log p` exactly.
 So the logarithmic shape of the main theorem's hypothesis cannot be improved
 to `n ≥ log m(r,s)` with constant `1`, since `θ(n) < n` infinitely often (a
 classical oscillation fact not formalised here). -/
-theorem not_universal (n : ℕ) (z : Perm (Fin n)) (hz : orderOf z = 3) :
-    ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧
+theorem not_universal (n : ℕ) :
+    ∃ s : ℕ, 0 < s ∧ ¬ (2 ∣ s) ∧ s ∣ R n ∧ (∃ a : ℕ, R n = 2 ^ a * s) ∧
       L (R n : ℤ) (s : ℤ) = ∑ p ∈ (Finset.range (n + 1)).filter Nat.Prime, Real.log p ∧
-      ∀ x y : Perm (Fin n), x ^ (R n : ℤ) * y ^ (s : ℤ) ≠ z :=
+      ∀ z : Perm (Fin n), orderOf z = 3 →
+        ∀ x y : Perm (Fin n), x ^ (R n : ℤ) * y ^ (s : ℤ) ≠ z :=
   sorry
 
 end Kourovka1032
